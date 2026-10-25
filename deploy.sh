@@ -43,8 +43,12 @@ done
 # Select the highest available PHP version (preferring >= 8.4)
 BEST_VER=0
 for candidate in "${SEARCH_PATHS[@]}"; do
+    if [[ "$candidate" =~ (cgi|phpize|config|dbg|fpm) ]]; then
+        continue
+    fi
     if command -v "$candidate" >/dev/null 2>&1 || [ -x "$candidate" ]; then
-        VER_ID=$($candidate -r "echo PHP_VERSION_ID;" 2>/dev/null || echo 0)
+        RAW_VER=$($candidate -r "echo PHP_VERSION_ID;" 2>/dev/null || echo 0)
+        VER_ID=$(echo "$RAW_VER" | grep -oE '^[0-9]+' || echo 0)
         VER_STR=$($candidate -r "echo PHP_VERSION;" 2>/dev/null || echo "")
         if [ "$VER_ID" -ge 80200 ]; then
             echo "   Found PHP CLI: $candidate (version $VER_STR)"
