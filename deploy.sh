@@ -81,13 +81,15 @@ fi
 
 # 2b. Ensure StackCP database credentials and APP_URL are configured in .env
 if [ -f ".env" ]; then
+    # Always enforce the subdomain URL
+    sed -i "s|^APP_URL=.*|APP_URL=https://crm.bytebunkers.sbs|" .env
+
     if grep -q "your_stackcp_database_name" .env 2>/dev/null || grep -q "DB_HOST=127.0.0.1" .env 2>/dev/null || grep -q "DB_HOST=localhost" .env 2>/dev/null; then
         echo "==> Configuring StackCP database credentials in .env..."
         sed -i "s|^DB_HOST=.*|DB_HOST=shareddb-m.hosting.stackcp.net|" .env
         sed -i "s|^DB_DATABASE=.*|DB_DATABASE=wfa-crm-3130313f75|" .env
         sed -i "s|^DB_USERNAME=.*|DB_USERNAME=wfa-crm-3130313f75|" .env
         sed -i 's|^DB_PASSWORD=.*|DB_PASSWORD="rtbepa-cet5rC-zmyxtg"|' .env
-        sed -i "s|^APP_URL=.*|APP_URL=https://crm.bytebunkers.sbs|" .env
     fi
 fi
 
@@ -115,6 +117,43 @@ chmod -R 775 storage bootstrap/cache || true
 # 6. Ensure storage symlink exists
 echo "==> Linking storage..."
 $PHP_BIN artisan storage:link || true
+
+# 6b. Bridge web server document roots for crm.bytebunkers.sbs
+echo "==> Configuring web server document roots for crm.bytebunkers.sbs..."
+CURRENT_DIR="$(pwd)"
+PARENT_DIR="$(cd .. && pwd)"
+TARGET_PUBLIC="$CURRENT_DIR/public"
+
+echo "Current dir: $CURRENT_DIR"
+echo "Parent dir:  $PARENT_DIR"
+echo "Listing parent dir ($PARENT_DIR):"
+ls -la "$PARENT_DIR" || true
+
+if [ -d "$PARENT_DIR/public_html" ]; then
+    echo "Listing public_html ($PARENT_DIR/public_html):"
+    ls -la "$PARENT_DIR/public_html" || true
+fi
+
+# Deploy check diagnostic file
+echo "crewflow-deployed-ok-$(date +%s)" > "$TARGET_PUBLIC/deploy_check.txt"
+
+# Bridge all possible subdomain paths that StackCP creates
+for SUBDIR in "$PARENT_DIR/public_html/crm" "$PARENT_DIR/crm" "$PARENT_DIR/public_html/crm.bytebunkers.sbs" "$PARENT_DIR/crm.bytebunkers.sbs" "$PARENT_DIR/subdomains/crm"; do
+    PARENT_OF_SUBDIR="$(dirname "$SUBDIR")"
+    if [ -d "$PARENT_OF_SUBDIR" ]; then
+        echo "--> Inspecting candidate subdomain document root: $SUBDIR"
+        if [ -L "$SUBDIR" ]; then
+            echo "    Existing symlink found at $SUBDIR -> $(readlink "$SUBDIR")"
+            rm -f "$SUBDIR"
+        elif [ -d "$SUBDIR" ]; then
+            echo "    Existing directory found at $SUBDIR"
+            # Remove directory if empty or replace
+            rm -rf "$SUBDIR"
+        fi
+        echo "    Creating symlink: $SUBDIR -> $TARGET_PUBLIC"
+        ln -s "$TARGET_PUBLIC" "$SUBDIR" || true
+    fi
+done
 
 # 7. Run failproof database deployment (automated backup + migrations + first-deploy seed check)
 echo "==> Executing database deployment (backup, migration, seeding)..."
