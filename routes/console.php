@@ -22,3 +22,6 @@ Schedule::command('app:send-plan-usage-alerts')->dailyAt('10:00')->withoutOverla
 
 // Send API key expiry alerts daily at 08:00 UTC
 Schedule::command('app:send-api-key-expiry-alerts')->dailyAt('08:00')->withoutOverlapping();
+
+// Scan for overdue work orders hourly
+Schedule::command('app:check-overdue-work-orders')->hourly()->withoutOverlapping();

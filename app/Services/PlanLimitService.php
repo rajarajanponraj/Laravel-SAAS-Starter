@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\WorkOrderEvidence;
 use App\Models\Workspace;
 
 class PlanLimitService
@@ -188,5 +189,76 @@ class PlanLimitService
         }
 
         return "You can create {$remaining} more webhook(s). ({$count}/{$limits['webhooks']} used)";
+    }
+
+    /**
+     * Check if a workspace can create more work orders in the current month.
+     */
+    public function canCreateWorkOrder(Workspace $workspace): bool
+    {
+        $limits = $this->getLimits($workspace->plan_name);
+        $maxJobs = $limits['work_orders'] ?? 15;
+
+        if ($maxJobs === -1) {
+            return true;
+        }
+
+        $jobsThisMonth = $workspace->workOrders()
+            ->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])
+            ->count();
+
+        return $jobsThisMonth < $maxJobs;
+    }
+
+    /**
+     * Check if a workspace can create more automation rules.
+     */
+    public function canCreateAutomationRule(Workspace $workspace): bool
+    {
+        $limits = $this->getLimits($workspace->plan_name);
+        $maxAutomations = $limits['automations'] ?? 0;
+
+        if ($maxAutomations === -1) {
+            return true;
+        }
+
+        if ($maxAutomations === 0) {
+            return false;
+        }
+
+        return $workspace->automationRules()->count() < $maxAutomations;
+    }
+
+    /**
+     * Check if a workspace can upload more evidence without exceeding storage quota.
+     */
+    public function canUploadEvidence(Workspace $workspace, int $newFileSizeBytes = 0): bool
+    {
+        $limits = $this->getLimits($workspace->plan_name);
+        $maxStorageMb = $limits['storage_mb'] ?? 50;
+
+        if ($maxStorageMb === -1) {
+            return true;
+        }
+
+        $maxStorageBytes = $maxStorageMb * 1024 * 1024;
+        $currentStorageBytes = (int) WorkOrderEvidence::where('workspace_id', $workspace->id)->sum('file_size');
+
+        return ($currentStorageBytes + $newFileSizeBytes) <= $maxStorageBytes;
+    }
+
+    /**
+     * Check if a workspace can create more checklist templates.
+     */
+    public function canCreateChecklistTemplate(Workspace $workspace): bool
+    {
+        $limits = $this->getLimits($workspace->plan_name);
+        $maxTemplates = $limits['custom_templates'] ?? 3;
+
+        if ($maxTemplates === -1) {
+            return true;
+        }
+
+        return $workspace->checklistTemplates()->count() < $maxTemplates;
     }
 }

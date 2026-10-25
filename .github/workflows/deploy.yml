@@ -1,0 +1,135 @@
+name: Deploy to Production (bytebunkers.sbs)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: production-deployment
+  cancel-in-progress: false
+
+jobs:
+  test-and-build:
+    name: Test & Build Production Assets
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, bcmath, pdo, pdo_sqlite, pdo_mysql, tokenizer, xml, curl
+          tools: composer:v2
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install Node Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache Composer Dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-8.4-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-8.4-composer-
+
+      - name: Install Composer Dependencies (with dev for build/tests)
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Build Frontend Production Assets
+        run: pnpm run build
+
+      - name: Run Failproof Pre-Deployment Tests
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan test --compact tests/Feature/CustomerTest.php tests/Feature/WorkOrderTest.php tests/Feature/BillingEntitlementTest.php tests/Feature/CrewFlowEndToEndTest.php
+
+      - name: Install Production-Only Composer Dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+
+      - name: Create Production Deployment Bundle
+        run: |
+          mkdir -p ../deployment-artifact
+          rsync -av --progress ./ ../deployment-artifact/ \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='tests' \
+            --exclude='.env' \
+            --exclude='.env.example' \
+            --exclude='storage/app/private/*' \
+            --exclude='storage/logs/*' \
+            --exclude='storage/framework/cache/data/*' \
+            --exclude='storage/framework/sessions/*' \
+            --exclude='storage/framework/views/*'
+
+      - name: Upload Deployment Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-build
+          path: ../deployment-artifact/
+          retention-days: 1
+
+  deploy-to-server:
+    name: Deploy to StackCP via SSH
+    needs: test-and-build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Production Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: production-build
+          path: ./
+
+      - name: Configure SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p ${{ secrets.SSH_PORT || 22 }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Sync Files to Server via Rsync
+        env:
+          SSH_PORT: ${{ secrets.SSH_PORT || 22 }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || 'crewflow' }}
+        run: |
+          echo "Syncing production files to ${SSH_USER}@${SSH_HOST}:${DEPLOY_PATH}..."
+          rsync -avz --delete \
+            -e "ssh -p ${SSH_PORT}" \
+            --exclude='.env' \
+            --exclude='storage/app/private' \
+            --exclude='storage/logs' \
+            --exclude='storage/framework/cache/data' \
+            --exclude='storage/framework/sessions' \
+            --exclude='storage/framework/views' \
+            ./ ${SSH_USER}@${SSH_HOST}:${DEPLOY_PATH}/
+
+      - name: Run Server-Side Deployment Script
+        env:
+          SSH_PORT: ${{ secrets.SSH_PORT || 22 }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || 'crewflow' }}
+        run: |
+          ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} "
+            cd ${DEPLOY_PATH} && \
+            chmod +x deploy.sh && \
+            ./deploy.sh
+          "

@@ -35,9 +35,12 @@ use App\Http\Controllers\Admin\WorkspaceActivityHeatmapController;
 use App\Http\Controllers\ApiUsageController;
 use App\Http\Controllers\Auth\MagicLinkController;
 use App\Http\Controllers\Auth\SocialiteController;
+use App\Http\Controllers\AutomationRuleController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\ChangelogController;
 use App\Http\Controllers\ChangelogWidgetController;
+use App\Http\Controllers\ChecklistTemplateController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ExperienceFeedbackController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\InvitationController;
@@ -46,7 +49,9 @@ use App\Http\Controllers\MemberActivityController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OnboardingChecklistController;
 use App\Http\Controllers\OnboardingController;
+use App\Http\Controllers\ReportDashboardController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ServiceLocationController;
 use App\Http\Controllers\Settings\ConnectedAccountController;
 use App\Http\Controllers\Settings\WorkspaceLogoController;
 use App\Http\Controllers\Settings\WorkspaceSecurityController;
@@ -58,6 +63,13 @@ use App\Http\Controllers\TourController;
 use App\Http\Controllers\UsageController;
 use App\Http\Controllers\WebhookEndpointController;
 use App\Http\Controllers\WebhookLogController;
+use App\Http\Controllers\WorkerJobController;
+use App\Http\Controllers\WorkOrderAssignmentController;
+use App\Http\Controllers\WorkOrderChecklistController;
+use App\Http\Controllers\WorkOrderController;
+use App\Http\Controllers\WorkOrderEvidenceController;
+use App\Http\Controllers\WorkOrderReportController;
+use App\Http\Controllers\WorkOrderStatusController;
 use App\Http\Controllers\WorkspaceActivityController;
 use App\Http\Controllers\WorkspaceAnalyticsController;
 use App\Http\Controllers\WorkspaceAnnouncementController;
@@ -122,6 +134,41 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', '
             ],
         ]);
     })->name('dashboard');
+
+    // CrewFlow Operations
+    Route::resource('customers', CustomerController::class);
+    Route::post('/service-locations', [ServiceLocationController::class, 'store'])->name('service-locations.store');
+    Route::put('/service-locations/{serviceLocation}', [ServiceLocationController::class, 'update'])->name('service-locations.update');
+    Route::delete('/service-locations/{serviceLocation}', [ServiceLocationController::class, 'destroy'])->name('service-locations.destroy');
+
+    Route::resource('work-orders', WorkOrderController::class);
+    Route::post('/work-orders/{workOrder}/assign', [WorkOrderAssignmentController::class, 'store'])->name('work-orders.assign');
+    Route::put('/work-orders/{workOrder}/status', [WorkOrderStatusController::class, 'update'])->name('work-orders.status.update');
+
+    Route::get('/my-jobs', [WorkerJobController::class, 'index'])->name('worker.jobs.index');
+
+    // Checklist Templates
+    Route::resource('checklist-templates', ChecklistTemplateController::class)->only(['index', 'store', 'destroy']);
+
+    // Work Order Checklists & Items
+    Route::post('/work-orders/{workOrder}/checklists', [WorkOrderChecklistController::class, 'store'])->name('work-orders.checklists.store');
+    Route::put('/work-orders/{workOrder}/checklists/items/{checklistItem}', [WorkOrderChecklistController::class, 'updateItem'])->name('work-orders.checklists.items.update');
+
+    // Work Order Evidence
+    Route::post('/work-orders/{workOrder}/evidence', [WorkOrderEvidenceController::class, 'store'])->name('work-orders.evidence.store');
+    Route::get('/work-orders/{workOrder}/evidence/{evidence}', [WorkOrderEvidenceController::class, 'download'])->name('work-orders.evidence.download');
+    Route::delete('/work-orders/{workOrder}/evidence/{evidence}', [WorkOrderEvidenceController::class, 'destroy'])->name('work-orders.evidence.destroy');
+
+    // Work Order Completion Report
+    Route::get('/work-orders/{workOrder}/report', [WorkOrderReportController::class, 'show'])->name('work-orders.report');
+
+    // Automations
+    Route::resource('automations', AutomationRuleController::class)->only(['index', 'store', 'destroy']);
+    Route::put('/automations/{automationRule}/toggle', [AutomationRuleController::class, 'toggle'])->name('automations.toggle');
+
+    // Reports & Analytics
+    Route::get('/reports', [ReportDashboardController::class, 'index'])->name('reports.index');
+    Route::get('/reports/export-work-orders', [ReportDashboardController::class, 'export'])->name('reports.export');
 
     // Workspace routes
     Route::prefix('workspaces')->name('workspaces.')->group(function () {

@@ -216,6 +216,62 @@ class Workspace extends Model
     }
 
     /**
+     * Get customers belonging to this workspace.
+     */
+    public function customers(): HasMany
+    {
+        return $this->hasMany(Customer::class);
+    }
+
+    /**
+     * Get service locations belonging to this workspace.
+     */
+    public function serviceLocations(): HasMany
+    {
+        return $this->hasMany(ServiceLocation::class);
+    }
+
+    /**
+     * Get work orders belonging to this workspace.
+     */
+    public function workOrders(): HasMany
+    {
+        return $this->hasMany(WorkOrder::class);
+    }
+
+    /**
+     * Get checklist templates belonging to this workspace.
+     */
+    public function checklistTemplates(): HasMany
+    {
+        return $this->hasMany(ChecklistTemplate::class);
+    }
+
+    /**
+     * Get automation rules belonging to this workspace.
+     */
+    public function automationRules(): HasMany
+    {
+        return $this->hasMany(AutomationRule::class);
+    }
+
+    /**
+     * Get automation executions belonging to this workspace.
+     */
+    public function automationExecutions(): HasMany
+    {
+        return $this->hasMany(AutomationExecution::class);
+    }
+
+    /**
+     * Get notification deliveries belonging to this workspace.
+     */
+    public function notificationDeliveries(): HasMany
+    {
+        return $this->hasMany(NotificationDelivery::class);
+    }
+
+    /**
      * Determine if the given user belongs to the workspace.
      */
     public function hasUser(User $user): bool

@@ -16,9 +16,15 @@ import { usePage } from '@inertiajs/react';
 import {
     BarChart3,
     BookOpen,
+    Building2,
+    ClipboardList,
+    FileSpreadsheet,
+    HardHat,
     LayoutGrid,
+    ListChecks,
     Settings,
     ShieldAlert,
+    Zap,
 } from 'lucide-react';
 import { useMemo } from 'react';
 
@@ -31,6 +37,36 @@ const getMainNavItems = (
             title: t('navigation.dashboard', 'Dashboard'),
             href: '/dashboard',
             icon: LayoutGrid,
+        },
+        {
+            title: t('navigation.work_orders', 'Work Orders'),
+            href: '/work-orders',
+            icon: ClipboardList,
+        },
+        {
+            title: t('navigation.my_jobs', 'My Jobs'),
+            href: '/my-jobs',
+            icon: HardHat,
+        },
+        {
+            title: t('navigation.customers', 'Customers'),
+            href: '/customers',
+            icon: Building2,
+        },
+        {
+            title: t('navigation.checklists', 'Checklists'),
+            href: '/checklist-templates',
+            icon: ListChecks,
+        },
+        {
+            title: t('navigation.automations', 'Automations'),
+            href: '/automations',
+            icon: Zap,
+        },
+        {
+            title: t('navigation.reports', 'Reports'),
+            href: '/reports',
+            icon: FileSpreadsheet,
         },
         {
             title: t('navigation.usage', 'Usage'),

@@ -3,11 +3,14 @@
 namespace App\Providers;
 
 use App\Events\SubscriptionUpdated;
+use App\Events\WorkOrderAssigned;
+use App\Events\WorkOrderStatusChanged;
 use App\Events\WorkspaceMemberAdded;
 use App\Events\WorkspaceMemberRemoved;
 use App\Events\WorkspaceMemberRoleUpdated;
 use App\Events\WorkspaceUpdated;
 use App\Listeners\DispatchWebhooks;
+use App\Listeners\DispatchWorkOrderAutomations;
 use App\Listeners\LogFailedLogin;
 use App\Listeners\LogNotificationDelivery;
 use App\Listeners\LogSuccessfulLogin;
@@ -99,6 +102,10 @@ class AppServiceProvider extends ServiceProvider
 
         // Tell Cashier to use Workspace as the billable model instead of User
         Cashier::useCustomerModel(Workspace::class);
+
+        // CrewFlow Automation Event Listeners
+        Event::listen(WorkOrderStatusChanged::class, [DispatchWorkOrderAutomations::class, 'handleStatusChanged']);
+        Event::listen(WorkOrderAssigned::class, [DispatchWorkOrderAutomations::class, 'handleAssigned']);
 
         // Rate limiters
         RateLimiter::for('api', function (Request $request) {
