@@ -79,10 +79,16 @@ if [ ! -f ".env" ]; then
     fi
 fi
 
-# 2b. Ensure StackCP database credentials and APP_URL are configured in .env
+# 2b. Ensure StackCP database credentials, APP_URL, and APP_KEY are configured in .env
 if [ -f ".env" ]; then
     # Always enforce the subdomain URL
     sed -i "s|^APP_URL=.*|APP_URL=https://crm.bytebunkers.sbs|" .env
+
+    # Always ensure APP_KEY is generated and populated
+    if ! grep -q "^APP_KEY=base64:" .env 2>/dev/null; then
+        echo "==> APP_KEY missing or not base64 in .env! Generating production app key..."
+        $PHP_BIN artisan key:generate --force || true
+    fi
 
     if grep -q "your_stackcp_database_name" .env 2>/dev/null || grep -q "DB_HOST=127.0.0.1" .env 2>/dev/null || grep -q "DB_HOST=localhost" .env 2>/dev/null; then
         echo "==> Configuring StackCP database credentials in .env..."
