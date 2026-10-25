@@ -7,6 +7,11 @@ use Knuckles\Scribe\Extracting\Strategies;
 use function Knuckles\Scribe\Config\configureStrategy;
 use function Knuckles\Scribe\Config\removeStrategies;
 
+// If Scribe is not installed (e.g. in production with --no-dev), safely return empty config
+if (! class_exists(AuthIn::class)) {
+    return [];
+}
+
 // Only the most common configs are shown. See the https://scribe.knuckles.wtf/laravel/reference/config for all.
 
 return [
