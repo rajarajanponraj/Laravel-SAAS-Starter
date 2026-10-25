@@ -1,6 +1,6 @@
-# CrewFlow Deployment Guide — StackCP (`bytebunkers.sbs`)
+# CrewFlow Deployment Guide — StackCP (`crm.bytebunkers.sbs`)
 
-This guide explains how to set up **continuous, automated, failproof deployment** for CrewFlow to your **StackCP** shared hosting account (`bytebunkers.sbs`) whenever code is pushed to your `main` branch.
+This guide explains how to set up **continuous, automated, failproof deployment** for CrewFlow to your **StackCP** shared hosting subdomain (`crm.bytebunkers.sbs`) whenever code is pushed to your `main` branch.
 
 ---
 
@@ -120,18 +120,17 @@ Save and exit (`Ctrl+O`, `Enter`, `Ctrl+X`).
 > - **Initial Seeding**: On the very first deployment, the script detects an empty database and automatically provisions your Superadmin account, default workspace (`CrewFlow Operations`), and standard field service inspection templates. Your login credentials are saved to `storage/logs/initial_credentials.txt`.
 > - **Preservation**: On all future deployments, the database check detects existing users and automatically skips seeding, ensuring customer data is never altered.
 
-### 4. Link the Web Root (`public_html` to `public`)
-On StackCP, the document root for your website is `public_html`. To safely isolate your code and `.env` outside the public web root:
-
-```bash
-# Backup existing public_html if not empty
-mv ~/public_html ~/public_html_backup
-
-# Symlink public_html to crewflow/public
-ln -s ~/crewflow/public ~/public_html
-```
-
-*(If your StackCP host does not permit symlinking `public_html`, copy `public/*` into `public_html` and edit `index.php` to point to `../crewflow/vendor/autoload.php` and `../crewflow/bootstrap/app.php`).*
+### 4. Configure Subdomain Web Root (`crm.bytebunkers.sbs`)
+In your StackCP control panel:
+1. Go to **Subdomains** (or **Domain Names**).
+2. Create or configure subdomain **`crm.bytebunkers.sbs`**.
+3. **Document Root Options**:
+   - **Option 1 (Direct to public)**: Set Document Root to `crewflow/public`.
+   - **Option 2 (Root .htaccess)**: If StackCP only points to `crewflow`, our included root `.htaccess` automatically and securely rewrites all requests into `/public` and blocks direct access to `.env` and sensitive files.
+   - **Option 3 (Symlink)**: If StackCP uses a dedicated folder like `public_html/crm`:
+     ```bash
+     ln -s ~/crewflow/public ~/public_html/crm
+     ```
 
 ---
 

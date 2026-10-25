@@ -34,7 +34,7 @@ test('db:deploy --seed-if-empty provisions superadmin, workspace and checklists 
 
     $admin = User::where('is_superadmin', true)->first();
     expect($admin)->not->toBeNull();
-    expect($admin->email)->toBe('admin@bytebunkers.sbs');
+    expect($admin->email)->toBe('admin@crm.bytebunkers.sbs');
 
     $workspace = Workspace::where('name', 'CrewFlow Operations')->first();
     expect($workspace)->not->toBeNull();

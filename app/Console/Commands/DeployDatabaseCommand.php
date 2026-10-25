@@ -167,7 +167,7 @@ class DeployDatabaseCommand extends Command
 
         $this->info('==> Fresh database detected. Provisioning initial Superadmin and Workspace...');
 
-        $adminEmail = env('ADMIN_EMAIL', 'admin@bytebunkers.sbs');
+        $adminEmail = env('ADMIN_EMAIL', 'admin@crm.bytebunkers.sbs');
         $initialPassword = env('ADMIN_INITIAL_PASSWORD') ?: Str::random(16);
 
         DB::transaction(function () use ($workspaceService, $adminEmail, $initialPassword) {
