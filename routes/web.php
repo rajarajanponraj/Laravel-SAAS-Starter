@@ -93,6 +93,18 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::get('/debug-error', function () {
+    $logFile = storage_path('logs/laravel.log');
+    if (! file_exists($logFile)) {
+        return response()->json(['log' => 'no log file found at '.$logFile]);
+    }
+    $lines = file($logFile);
+
+    return response()->json([
+        'last_30_lines' => array_slice($lines, -30),
+    ]);
+});
+
 // Magic Link Auth Routes
 Route::middleware('guest')->group(function () {
     Route::get('/magic-login', [MagicLinkController::class, 'create'])->name('magic-link.create');

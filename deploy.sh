@@ -175,4 +175,9 @@ $PHP_BIN artisan queue:restart || true
 echo "==> Bringing application back online..."
 $PHP_BIN artisan up
 
+if [ -f "storage/logs/laravel.log" ]; then
+    echo "==> Recent Laravel logs:"
+    tail -n 30 storage/logs/laravel.log || true
+fi
+
 echo "==> [CrewFlow] Deployment completed successfully on $(date '+%Y-%m-%d %H:%M:%S')!"
