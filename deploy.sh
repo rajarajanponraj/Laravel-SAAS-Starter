@@ -12,15 +12,56 @@ set -eo pipefail
 echo "==> [CrewFlow] Starting deployment on $(date '+%Y-%m-%d %H:%M:%S')..."
 
 # 1. Determine PHP CLI binary
-PHP_BIN="php"
-for candidate in php8.4 /usr/bin/php8.4 /usr/local/bin/php8.4 /opt/alt/php84/usr/bin/php /opt/cpanel/ea-php84/root/usr/bin/php /usr/local/bin/ea-php84 /usr/local/bin/php /usr/bin/php php; do
-    if command -v "$candidate" >/dev/null 2>&1; then
-        PHP_BIN="$candidate"
-        break
+PHP_BIN=""
+echo "==> Detecting server PHP binaries..."
+
+SEARCH_PATHS=(
+    "/usr/bin/php-8.4"
+    "/usr/bin/php8.4"
+    "/usr/bin/php84"
+    "/usr/local/bin/php-8.4"
+    "/usr/local/bin/php8.4"
+    "/opt/php-8.4/bin/php"
+    "/opt/php/8.4/bin/php"
+    "/opt/alt/php84/usr/bin/php"
+    "/opt/cpanel/ea-php84/root/usr/bin/php"
+    "/usr/bin/php-8.3"
+    "/usr/bin/php8.3"
+    "/usr/bin/php-8.2"
+    "/usr/bin/php8.2"
+    "/usr/bin/php"
+    "php"
+)
+
+# Expand any php binaries in common directories
+for p in /usr/bin/php* /usr/local/bin/php* /opt/*/bin/php* /opt/*/*/bin/php*; do
+    if [ -x "$p" ]; then
+        SEARCH_PATHS+=("$p")
     fi
 done
 
-echo "==> Using PHP binary: $($PHP_BIN -v 2>&1 | head -n 1)"
+# Select the highest available PHP version (preferring >= 8.4)
+BEST_VER=0
+for candidate in "${SEARCH_PATHS[@]}"; do
+    if command -v "$candidate" >/dev/null 2>&1 || [ -x "$candidate" ]; then
+        VER_ID=$($candidate -r "echo PHP_VERSION_ID;" 2>/dev/null || echo 0)
+        VER_STR=$($candidate -r "echo PHP_VERSION;" 2>/dev/null || echo "")
+        if [ "$VER_ID" -ge 80200 ]; then
+            echo "   Found PHP CLI: $candidate (version $VER_STR)"
+            if [ "$VER_ID" -gt "$BEST_VER" ]; then
+                BEST_VER=$VER_ID
+                PHP_BIN="$candidate"
+            fi
+        fi
+    fi
+done
+
+if [ -z "$PHP_BIN" ]; then
+    echo "WARNING: Could not find PHP >= 8.2 CLI binary. Defaulting to 'php'." >&2
+    PHP_BIN="php"
+fi
+
+echo "==> Selected PHP binary: $PHP_BIN ($($PHP_BIN -v 2>&1 | head -n 1))"
 
 # 2. Verify or create .env file
 if [ ! -f ".env" ]; then
