@@ -109,6 +109,7 @@ $PHP_BIN artisan down --retry=60 --refresh=15 || true
 
 # 5. Fix permissions for storage and cache directories
 echo "==> Setting directory permissions..."
+mkdir -p storage/app/public storage/app/backups storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
 chmod -R 775 storage bootstrap/cache || true
 
 # 6. Ensure storage symlink exists

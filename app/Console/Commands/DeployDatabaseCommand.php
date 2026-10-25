@@ -217,6 +217,7 @@ class DeployDatabaseCommand extends Command
 
             // 4. Save initial credentials file
             $credsFile = storage_path('logs/initial_credentials.txt');
+            File::ensureDirectoryExists(dirname($credsFile));
             $credsContent = "CrewFlow Initial Superadmin Credentials\n"
                 ."========================================\n"
                 .'Generated At : '.now()->toDateTimeString()."\n"
