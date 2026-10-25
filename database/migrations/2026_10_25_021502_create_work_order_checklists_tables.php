@@ -35,8 +35,8 @@ return new class extends Migration
             $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();
 
-            $table->index(['work_order_checklist_id', 'is_completed']);
-            $table->index(['work_order_checklist_id', 'sort_order']);
+            $table->index(['work_order_checklist_id', 'is_completed'], 'woci_checklist_completed_idx');
+            $table->index(['work_order_checklist_id', 'sort_order'], 'woci_checklist_sort_idx');
         });
     }
 
