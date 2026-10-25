@@ -79,6 +79,18 @@ if [ ! -f ".env" ]; then
     fi
 fi
 
+# 2b. Ensure StackCP database credentials and APP_URL are configured in .env
+if [ -f ".env" ]; then
+    if grep -q "your_stackcp_database_name" .env 2>/dev/null || grep -q "DB_HOST=127.0.0.1" .env 2>/dev/null || grep -q "DB_HOST=localhost" .env 2>/dev/null; then
+        echo "==> Configuring StackCP database credentials in .env..."
+        sed -i "s|^DB_HOST=.*|DB_HOST=shareddb-m.hosting.stackcp.net|" .env
+        sed -i "s|^DB_DATABASE=.*|DB_DATABASE=wfa-crm-3130313f75|" .env
+        sed -i "s|^DB_USERNAME=.*|DB_USERNAME=wfa-crm-3130313f75|" .env
+        sed -i 's|^DB_PASSWORD=.*|DB_PASSWORD="rtbepa-cet5rC-zmyxtg"|' .env
+        sed -i "s|^APP_URL=.*|APP_URL=https://crm.bytebunkers.sbs|" .env
+    fi
+fi
+
 # 3. Trap errors to ensure maintenance mode is restored if a step fails
 cleanup() {
     EXIT_CODE=$?
