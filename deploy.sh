@@ -13,21 +13,25 @@ echo "==> [CrewFlow] Starting deployment on $(date '+%Y-%m-%d %H:%M:%S')..."
 
 # 1. Determine PHP CLI binary
 PHP_BIN="php"
-if command -v php8.4 >/dev/null 2>&1; then
-    PHP_BIN="php8.4"
-elif command -v /usr/local/bin/php >/dev/null 2>&1; then
-    PHP_BIN="/usr/local/bin/php"
-elif command -v /usr/bin/php >/dev/null 2>&1; then
-    PHP_BIN="/usr/bin/php"
-fi
+for candidate in php8.4 /usr/bin/php8.4 /usr/local/bin/php8.4 /opt/alt/php84/usr/bin/php /opt/cpanel/ea-php84/root/usr/bin/php /usr/local/bin/ea-php84 /usr/local/bin/php /usr/bin/php php; do
+    if command -v "$candidate" >/dev/null 2>&1; then
+        PHP_BIN="$candidate"
+        break
+    fi
+done
 
-echo "==> Using PHP binary: $($PHP_BIN -v | head -n 1)"
+echo "==> Using PHP binary: $($PHP_BIN -v 2>&1 | head -n 1)"
 
-# 2. Verify .env file exists
+# 2. Verify or create .env file
 if [ ! -f ".env" ]; then
-    echo "ERROR: Production .env file is missing in $(pwd)!" >&2
-    echo "Please copy .env.production.example to .env and configure database credentials before deploying." >&2
-    exit 1
+    if [ -f ".env.production.example" ]; then
+        echo "==> No .env file found. Auto-creating .env from .env.production.example..."
+        cp .env.production.example .env
+        $PHP_BIN artisan key:generate --force || true
+    else
+        echo "ERROR: Production .env file is missing in $(pwd)!" >&2
+        exit 1
+    fi
 fi
 
 # 3. Trap errors to ensure maintenance mode is restored if a step fails

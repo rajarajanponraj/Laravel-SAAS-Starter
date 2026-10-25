@@ -152,6 +152,5 @@ jobs:
         run: |
           ssh -p ${SSH_PORT} -o StrictHostKeyChecking=accept-new -o BatchMode=yes ${SSH_USER}@${SSH_HOST} "
             cd ${DEPLOY_PATH} && \
-            chmod +x deploy.sh && \
-            ./deploy.sh
+            bash deploy.sh
           "
