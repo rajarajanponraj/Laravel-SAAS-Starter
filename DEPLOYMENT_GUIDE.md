@@ -53,7 +53,8 @@ This creates two files:
 - `crewflow_deploy_key.pub` (**Public key** — add to StackCP)
 
 ### Add Public Key to StackCP:
-In your StackCP panel under **SSH Access**, click **Add Public Key** and paste the entire contents of `crewflow_deploy_key.pub`.
+In your StackCP panel under **SSH Access**, click **Add Public Key** and paste the public key (`github-actions-deploy@bytebunkers.sbs`).
+The private key is stored as the `SSH_PRIVATE_KEY` repository secret in GitHub Actions.
 
 ---
 
