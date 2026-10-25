@@ -99,11 +99,31 @@ jobs:
           path: ./
 
       - name: Configure SSH Key
+        env:
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT || 22 }}
+          SSH_USER: ${{ secrets.SSH_USER }}
         run: |
+          if [ -z "$SSH_KEY" ]; then
+            echo "::error::GitHub secret SSH_PRIVATE_KEY is missing or empty! Please add it in Repository Settings -> Secrets and variables -> Actions."
+            exit 1
+          fi
+          if [ -z "$SSH_HOST" ]; then
+            echo "::error::GitHub secret SSH_HOST is missing or empty! Please add it in Repository Settings -> Secrets and variables -> Actions."
+            exit 1
+          fi
+          if [ -z "$SSH_USER" ]; then
+            echo "::error::GitHub secret SSH_USER is missing or empty! Please add it in Repository Settings -> Secrets and variables -> Actions."
+            exit 1
+          fi
+
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          printf '%s\n' "$SSH_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+          # Ensure file ends with newline
+          sed -i -e '$a\' ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -p ${{ secrets.SSH_PORT || 22 }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -p "${SSH_PORT}" "${SSH_HOST}" >> ~/.ssh/known_hosts 2>/dev/null || true
 
       - name: Sync Files to Server via Rsync
         env:
@@ -114,7 +134,7 @@ jobs:
         run: |
           echo "Syncing production files to ${SSH_USER}@${SSH_HOST}:${DEPLOY_PATH}..."
           rsync -avz --delete \
-            -e "ssh -p ${SSH_PORT}" \
+            -e "ssh -p ${SSH_PORT} -o StrictHostKeyChecking=accept-new -o BatchMode=yes" \
             --exclude='.env' \
             --exclude='storage/app/private' \
             --exclude='storage/logs' \
@@ -130,7 +150,7 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || 'crewflow' }}
         run: |
-          ssh -p ${SSH_PORT} ${SSH_USER}@${SSH_HOST} "
+          ssh -p ${SSH_PORT} -o StrictHostKeyChecking=accept-new -o BatchMode=yes ${SSH_USER}@${SSH_HOST} "
             cd ${DEPLOY_PATH} && \
             chmod +x deploy.sh && \
             ./deploy.sh
