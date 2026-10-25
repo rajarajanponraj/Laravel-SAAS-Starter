@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Settings\ApiTokenController;
-use App\Http\Controllers\Settings\ConnectedAccountController;
 use App\Http\Controllers\Settings\LoginActivityController;
 use App\Http\Controllers\Settings\NotificationPreferenceController;
 use App\Http\Controllers\Settings\PasswordController;
@@ -84,10 +83,6 @@ Route::middleware('auth')->group(function () {
         Route::post('settings/tickets/{ticket}/close', 'close')->name('settings.tickets.close');
         Route::post('settings/tickets/{ticket}/reopen', 'reopen')->name('settings.tickets.reopen');
     });
-
-    // Connected Accounts
-    Route::get('settings/connected-accounts', [ConnectedAccountController::class, 'index'])->name('connected-accounts.index');
-    Route::delete('settings/connected-accounts/{connectedAccount}', [ConnectedAccountController::class, 'destroy'])->name('connected-accounts.destroy');
 
     // Security Summary
     Route::get('settings/security-summary', SecuritySummaryController::class)->name('security-summary.index');
