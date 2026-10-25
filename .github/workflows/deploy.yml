@@ -63,8 +63,9 @@ jobs:
 
       - name: Create Production Deployment Bundle
         run: |
-          mkdir -p ../deployment-artifact
-          rsync -av --progress ./ ../deployment-artifact/ \
+          mkdir -p deployment-artifact
+          rsync -av --progress ./ deployment-artifact/ \
+            --exclude='deployment-artifact' \
             --exclude='.git' \
             --exclude='.github' \
             --exclude='node_modules' \
@@ -81,7 +82,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: production-build
-          path: ../deployment-artifact/
+          path: deployment-artifact/
+          include-hidden-files: true
           retention-days: 1
 
   deploy-to-server:
