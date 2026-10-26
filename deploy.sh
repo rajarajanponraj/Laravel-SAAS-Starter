@@ -173,6 +173,10 @@ $PHP_BIN artisan route:cache
 $PHP_BIN artisan view:cache
 $PHP_BIN artisan event:cache
 
+# 8b. Check and report SMTP server status
+echo "==> Checking SMTP mail transport status..."
+$PHP_BIN artisan mail:check || true
+
 # 9. Restart queue workers so they pick up new code
 echo "==> Restarting background queue workers..."
 $PHP_BIN artisan queue:restart || true
