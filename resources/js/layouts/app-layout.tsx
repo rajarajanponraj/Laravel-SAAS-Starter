@@ -4,7 +4,7 @@ import { FeatureProvider } from '@/contexts/feature-context';
 import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { router, usePage } from '@inertiajs/react';
-import { useEcho } from '@laravel/echo-react';
+import { echoIsConfigured, useEcho } from '@laravel/echo-react';
 import { type ReactNode } from 'react';
 
 interface AppLayoutProps {
@@ -12,7 +12,7 @@ interface AppLayoutProps {
     breadcrumbs?: BreadcrumbItem[];
 }
 
-export default ({ children, breadcrumbs, ...props }: AppLayoutProps) => {
+function WorkspaceActivitySubscription() {
     const { currentWorkspace } = usePage<SharedData>().props;
     const { addToast } = useToast();
 
@@ -26,10 +26,20 @@ export default ({ children, breadcrumbs, ...props }: AppLayoutProps) => {
         },
     );
 
+    return null;
+}
+
+export default ({ children, breadcrumbs, ...props }: AppLayoutProps) => {
     const { auth } = usePage<SharedData>().props;
+    const hasBroadcaster = Boolean(
+        import.meta.env.VITE_REVERB_APP_KEY || import.meta.env.VITE_PUSHER_APP_KEY,
+    );
 
     return (
         <>
+            {hasBroadcaster && echoIsConfigured() && (
+                <WorkspaceActivitySubscription />
+            )}
             {auth.is_impersonating && (
                 <div className="sticky top-0 z-50 flex items-center justify-center gap-4 bg-destructive px-4 py-2 text-center text-sm font-medium text-destructive-foreground">
                     <span>

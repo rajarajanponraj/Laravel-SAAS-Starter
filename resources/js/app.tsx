@@ -16,6 +16,14 @@ if (import.meta.env.VITE_REVERB_APP_KEY) {
     configureEcho({
         broadcaster: 'reverb',
     });
+} else if (import.meta.env.VITE_PUSHER_APP_KEY) {
+    configureEcho({
+        broadcaster: 'pusher',
+    });
+} else {
+    configureEcho({
+        broadcaster: 'null',
+    });
 }
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
