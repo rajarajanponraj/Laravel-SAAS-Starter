@@ -118,12 +118,28 @@ if [ -f ".env" ]; then
     sed -i 's|^MAIL_FROM_NAME=.*|MAIL_FROM_NAME="CrewFlow"|' .env
 
     # Ensure Razorpay billing gateway configuration in .env
-    if ! grep -q "^BILLING_GATEWAY=" .env 2>/dev/null; then
-        echo "==> Initializing Razorpay billing gateway configuration in .env..."
+    echo "==> Configuring Razorpay billing gateway credentials in .env..."
+    if grep -q "^BILLING_GATEWAY=" .env 2>/dev/null; then
+        sed -i "s|^BILLING_GATEWAY=.*|BILLING_GATEWAY=razorpay|" .env
+    else
         echo "BILLING_GATEWAY=razorpay" >> .env
-        echo "RAZORPAY_KEY_ID=" >> .env
-        echo "RAZORPAY_KEY_SECRET=" >> .env
-        echo "RAZORPAY_WEBHOOK_SECRET=" >> .env
+    fi
+
+    if grep -q "^RAZORPAY_KEY_ID=" .env 2>/dev/null; then
+        sed -i 's|^RAZORPAY_KEY_ID=.*|RAZORPAY_KEY_ID=rzp_test_TsQZUpNjnSBLf2|' .env
+    else
+        echo "RAZORPAY_KEY_ID=rzp_test_TsQZUpNjnSBLf2" >> .env
+    fi
+
+    if grep -q "^RAZORPAY_KEY_SECRET=" .env 2>/dev/null; then
+        sed -i 's|^RAZORPAY_KEY_SECRET=.*|RAZORPAY_KEY_SECRET=UMHZtNQDAAA3rvxkE3ol6OK8|' .env
+    else
+        echo "RAZORPAY_KEY_SECRET=UMHZtNQDAAA3rvxkE3ol6OK8" >> .env
+    fi
+
+    if grep -q "^RAZORPAY_CURRENCY=" .env 2>/dev/null; then
+        sed -i "s|^RAZORPAY_CURRENCY=.*|RAZORPAY_CURRENCY=INR|" .env
+    else
         echo "RAZORPAY_CURRENCY=INR" >> .env
     fi
 fi
