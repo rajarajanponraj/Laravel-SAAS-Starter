@@ -98,18 +98,21 @@ if [ -f ".env" ]; then
         sed -i 's|^DB_PASSWORD=.*|DB_PASSWORD="rtbepa-cet5rC-zmyxtg"|' .env
     fi
 
-    # Configure StackCP SMTP mail credentials in .env
-    if grep -q "your_email_password" .env 2>/dev/null || ! grep -q "^MAIL_PASSWORD=" .env 2>/dev/null || grep -q 'MAIL_PASSWORD=""' .env 2>/dev/null; then
-        echo "==> Configuring StackCP SMTP mail credentials in .env..."
-        sed -i "s|^MAIL_MAILER=.*|MAIL_MAILER=smtp|" .env
-        sed -i "s|^MAIL_HOST=.*|MAIL_HOST=mail.bytebunkers.sbs|" .env
-        sed -i "s|^MAIL_PORT=.*|MAIL_PORT=587|" .env
-        sed -i "s|^MAIL_USERNAME=.*|MAIL_USERNAME=notifications@bytebunkers.sbs|" .env
-        sed -i 's|^MAIL_PASSWORD=.*|MAIL_PASSWORD="zWkjmd-yac6eh-cdchcu"|' .env
-        sed -i "s|^MAIL_ENCRYPTION=.*|MAIL_ENCRYPTION=tls|" .env
-        sed -i 's|^MAIL_FROM_ADDRESS=.*|MAIL_FROM_ADDRESS="notifications@bytebunkers.sbs"|' .env
-        sed -i 's|^MAIL_FROM_NAME=.*|MAIL_FROM_NAME="CrewFlow"|' .env
+    # Configure StackCP SMTP mail credentials in .env (Port 465 SSL/SMTPS)
+    echo "==> Configuring StackCP SMTP mail credentials in .env (Port 465 SSL)..."
+    sed -i "s|^MAIL_MAILER=.*|MAIL_MAILER=smtp|" .env
+    sed -i "s|^MAIL_HOST=.*|MAIL_HOST=mail.bytebunkers.sbs|" .env
+    sed -i "s|^MAIL_PORT=.*|MAIL_PORT=465|" .env
+    sed -i "s|^MAIL_USERNAME=.*|MAIL_USERNAME=notifications@bytebunkers.sbs|" .env
+    sed -i 's|^MAIL_PASSWORD=.*|MAIL_PASSWORD="zWkjmd-yac6eh-cdchcu"|' .env
+    sed -i "s|^MAIL_ENCRYPTION=.*|MAIL_ENCRYPTION=ssl|" .env
+    if grep -q "^MAIL_SCHEME=" .env 2>/dev/null; then
+        sed -i "s|^MAIL_SCHEME=.*|MAIL_SCHEME=smtps|" .env
+    else
+        echo "MAIL_SCHEME=smtps" >> .env
     fi
+    sed -i 's|^MAIL_FROM_ADDRESS=.*|MAIL_FROM_ADDRESS="notifications@bytebunkers.sbs"|' .env
+    sed -i 's|^MAIL_FROM_NAME=.*|MAIL_FROM_NAME="CrewFlow"|' .env
 fi
 
 # 3. Trap errors to ensure maintenance mode is restored if a step fails

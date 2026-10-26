@@ -22,7 +22,8 @@ Route::get('/mail-status', function () {
     $error = null;
 
     if (! empty($host)) {
-        $socket = @fsockopen($host, $port, $errno, $errstr, 3.0);
+        $connectHost = ($port === 465) ? "ssl://{$host}" : $host;
+        $socket = @fsockopen($connectHost, $port, $errno, $errstr, 3.0);
         if ($socket) {
             $tcpConnected = true;
             stream_set_timeout($socket, 3);

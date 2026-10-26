@@ -62,9 +62,11 @@ class CheckSmtpCommand extends Command
             return self::FAILURE;
         }
 
-        // 1. Check TCP Connectivity & SMTP Banner
-        $this->info("==> Testing TCP connectivity to {$host}:{$port}...");
-        $socket = @fsockopen($host, (int) $port, $errno, $errstr, 5.0);
+        // 1. Check TCP Connectivity & SMTP Banner (with SSL wrapper if port 465)
+        $isSsl = (int) $port === 465;
+        $connectHost = $isSsl ? "ssl://{$host}" : $host;
+        $this->info("==> Testing connectivity to {$host}:{$port}".($isSsl ? ' (SSL)' : '').'...');
+        $socket = @fsockopen($connectHost, (int) $port, $errno, $errstr, 5.0);
 
         if (! $socket) {
             $this->error("Connection failed: {$errstr} (error code: {$errno})");
