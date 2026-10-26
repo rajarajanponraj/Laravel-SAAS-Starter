@@ -201,7 +201,7 @@ export default function ComparePlans({
                                                             {plan.name}
                                                         </div>
                                                         <div className="text-2xl font-bold text-primary">
-                                                            $
+                                                            {plan.currency_symbol || '$'}
                                                             {billingPeriod ===
                                                             'yearly'
                                                                 ? (
@@ -220,7 +220,7 @@ export default function ComparePlans({
                                                             plan.price.yearly >
                                                                 0 && (
                                                                 <div className="text-xs text-muted-foreground">
-                                                                    $
+                                                                    {plan.currency_symbol || '$'}
                                                                     {
                                                                         plan
                                                                             .price

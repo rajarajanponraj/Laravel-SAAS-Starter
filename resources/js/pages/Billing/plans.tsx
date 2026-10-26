@@ -28,7 +28,25 @@ interface PlansPageProps {
     recommendedBillingPeriod: 'monthly' | 'yearly' | null;
     fromOnboarding: boolean;
     userRole: WorkspaceRole;
+    billingGateway?: 'razorpay' | 'stripe';
+    razorpayKey?: string;
+    currency?: string;
 }
+
+const loadRazorpayScript = (): Promise<boolean> => {
+    return new Promise((resolve) => {
+        if (typeof window !== 'undefined' && (window as unknown as { Razorpay?: unknown }).Razorpay) {
+            resolve(true);
+            return;
+        }
+        const script = document.createElement('script');
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        script.async = true;
+        script.onload = () => resolve(true);
+        script.onerror = () => resolve(false);
+        document.body.appendChild(script);
+    });
+};
 
 export default function PlansPage({
     plans,
@@ -38,6 +56,9 @@ export default function PlansPage({
     recommendedBillingPeriod,
     fromOnboarding,
     userRole,
+    billingGateway = 'razorpay',
+    razorpayKey,
+    currency = 'INR',
 }: PlansPageProps) {
     const { t } = useTranslations();
     const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>(
@@ -72,16 +93,106 @@ export default function PlansPage({
 
         try {
             const { data } = await http.post<{
+                gateway?: string;
                 checkout_url?: string;
+                razorpay_order?: {
+                    order_id: string;
+                    key: string;
+                    amount: number;
+                    currency: string;
+                    name: string;
+                    description: string;
+                    prefill: {
+                        name: string;
+                        email: string;
+                        contact?: string;
+                    };
+                    theme?: {
+                        color?: string;
+                    };
+                    is_sandbox?: boolean;
+                };
                 success?: boolean;
+                message?: string;
                 error?: string;
             }>('/billing/subscribe', {
-                body: { plan: planId, billing_period: billingPeriod },
+                body: { plan: planId, billing_period: billingPeriod, gateway: billingGateway },
             });
+
+            if (data.razorpay_order) {
+                const isLoaded = await loadRazorpayScript();
+                if (!isLoaded) {
+                    addToast('Failed to load Razorpay SDK. Please check your connection.', 'error');
+                    setProcessing(null);
+                    return;
+                }
+
+                const order = data.razorpay_order;
+                const RazorpayConstructor = (window as unknown as {
+                    Razorpay: new (options: Record<string, unknown>) => {
+                        open: () => void;
+                        on: (event: string, handler: (resp: unknown) => void) => void;
+                    };
+                }).Razorpay;
+
+                const rzp = new RazorpayConstructor({
+                    key: order.key,
+                    amount: order.amount,
+                    currency: order.currency,
+                    name: order.name,
+                    description: order.description,
+                    order_id: order.order_id,
+                    prefill: order.prefill,
+                    theme: order.theme || { color: '#0f172a' },
+                    handler: async (response: {
+                        razorpay_payment_id: string;
+                        razorpay_order_id: string;
+                        razorpay_signature?: string;
+                    }) => {
+                        try {
+                            const { data: verifyData } = await http.post<{
+                                success: boolean;
+                                message?: string;
+                                error?: string;
+                            }>('/billing/razorpay/verify', {
+                                body: response,
+                            });
+
+                            if (verifyData.success) {
+                                addToast(verifyData.message || 'Payment successful! Subscription upgraded.', 'success');
+                                router.visit('/billing');
+                            } else {
+                                addToast(verifyData.error || 'Payment verification failed.', 'error');
+                                setProcessing(null);
+                            }
+                        } catch (verifyErr) {
+                            addToast('Payment verification failed. Please contact support.', 'error');
+                            setProcessing(null);
+                        }
+                    },
+                    modal: {
+                        ondismiss: () => {
+                            setProcessing(null);
+                        },
+                    },
+                });
+
+                rzp.on('payment.failed', function (resp: unknown) {
+                    const errorMsg = (resp as { error?: { description?: string } })?.error?.description || 'Payment was declined or cancelled.';
+                    addToast(errorMsg, 'error');
+                    setProcessing(null);
+                });
+
+                rzp.open();
+                return;
+            }
 
             if (data.checkout_url) {
                 window.location.href = data.checkout_url;
             } else if (data.success) {
+                if (data.message) {
+                    addToast(data.message, 'success');
+                }
                 router.visit('/billing');
             } else if (data.error) {
                 addToast(data.error, 'error');
@@ -91,6 +202,7 @@ export default function PlansPage({
             }
         } catch (error) {
             console.error('Subscription error:', error);
+            addToast('Could not complete checkout request.', 'error');
             setProcessing(null);
         }
     };
@@ -291,7 +403,7 @@ export default function PlansPage({
                                     </CardDescription>
                                     <div className="mt-6">
                                         <span className="text-5xl font-black tracking-tighter">
-                                            $
+                                            {plan.currency_symbol || '$'}
                                             {billingPeriod === 'monthly'
                                                 ? plan.price.monthly
                                                 : plan.price.yearly}

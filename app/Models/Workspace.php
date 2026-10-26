@@ -63,6 +63,9 @@ class Workspace extends Model
         'allowed_ips',
         'allowed_email_domains',
         'plan_override',
+        'billing_gateway',
+        'billing_period',
+        'plan_expires_at',
         'billing_email',
         'suspended_at',
         'suspension_reason',
@@ -79,6 +82,7 @@ class Workspace extends Model
             'personal_workspace' => 'boolean',
             'require_two_factor' => 'boolean',
             'trial_ends_at' => 'datetime',
+            'plan_expires_at' => 'datetime',
             'allowed_ips' => 'array',
             'allowed_email_domains' => 'array',
             'suspended_at' => 'datetime',
@@ -440,6 +444,14 @@ class Workspace extends Model
     }
 
     /**
+     * Clear cached resolved plan.
+     */
+    public function clearResolvedPlan(): void
+    {
+        $this->resolvedPlan = null;
+    }
+
+    /**
      * Resolve and cache plan name and key from Stripe subscription.
      *
      * @return array{name: string, key: string}
@@ -491,6 +503,10 @@ class Workspace extends Model
      */
     public function getBillingPeriodAttribute(): ?string
     {
+        if (! empty($this->attributes['billing_period'])) {
+            return $this->attributes['billing_period'];
+        }
+
         if (! $this->subscribed('default')) {
             return null;
         }
@@ -516,7 +532,7 @@ class Workspace extends Model
      */
     public function onFreePlan(): bool
     {
-        return ! $this->subscribed('default');
+        return $this->plan_name === 'Free';
     }
 
     /**
@@ -524,7 +540,7 @@ class Workspace extends Model
      */
     public function onProPlan(): bool
     {
-        return $this->subscribed('default') && $this->plan_name === 'Pro';
+        return $this->plan_name === 'Pro';
     }
 
     /**
@@ -532,7 +548,17 @@ class Workspace extends Model
      */
     public function onBusinessPlan(): bool
     {
-        return $this->subscribed('default') && $this->plan_name === 'Business';
+        return $this->plan_name === 'Business';
+    }
+
+    /**
+     * Razorpay payments made for this workspace.
+     *
+     * @return HasMany<RazorpayPayment, $this>
+     */
+    public function razorpayPayments(): HasMany
+    {
+        return $this->hasMany(RazorpayPayment::class);
     }
 
     /**

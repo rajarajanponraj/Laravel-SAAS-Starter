@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\RazorpayService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,6 +14,10 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class BillingController extends Controller
 {
+    public function __construct(
+        protected RazorpayService $razorpayService
+    ) {}
+
     /**
      * Display the billing overview page.
      */
@@ -101,6 +106,9 @@ class BillingController extends Controller
             'recommendedBillingPeriod' => $recommendedBillingPeriod,
             'fromOnboarding' => $request->query('onboarding') === '1',
             'userRole' => $workspace->getUserRole($user),
+            'billingGateway' => config('billing.gateway', 'razorpay'),
+            'razorpayKey' => config('billing.razorpay.key_id') ?: config('services.razorpay.key'),
+            'currency' => config('billing.currency', 'INR'),
         ]);
     }
 
@@ -145,11 +153,43 @@ class BillingController extends Controller
         $validated = $request->validate([
             'plan' => ['required', 'string', 'in:pro,business'],
             'billing_period' => ['required', 'string', 'in:monthly,yearly'],
+            'gateway' => ['nullable', 'string', 'in:razorpay,stripe'],
         ]);
 
         $user = $request->user();
         $workspace = $user->currentWorkspace;
         Gate::authorize('manageBilling', $workspace);
+
+        $gateway = $validated['gateway'] ?? config('billing.gateway', 'razorpay');
+
+        // Route to Razorpay when selected or default
+        if ($gateway === 'razorpay') {
+            if ($workspace->plan_key === $validated['plan'] && $workspace->billing_period === $validated['billing_period']) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'You are already on this plan.',
+                ]);
+            }
+
+            try {
+                $order = $this->razorpayService->createOrder(
+                    $workspace,
+                    $validated['plan'],
+                    $validated['billing_period'],
+                    $user
+                );
+
+                return response()->json([
+                    'gateway' => 'razorpay',
+                    'razorpay_order' => $order,
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Failed to initialize Razorpay payment: '.$e->getMessage(),
+                ], 500);
+            }
+        }
 
         $plans = config('billing.plans');
 
@@ -328,13 +368,23 @@ class BillingController extends Controller
     protected function getPlansForDisplay(): array
     {
         $plans = config('billing.plans');
+        $currency = config('billing.currency', 'INR');
+        $gateway = config('billing.gateway', 'razorpay');
 
-        return collect($plans)->map(function ($plan, $key) {
+        return collect($plans)->map(function ($plan, $key) use ($currency, $gateway) {
+            $inrPrice = [
+                'free' => ['monthly' => 0, 'yearly' => 0],
+                'pro' => ['monthly' => (int) env('RAZORPAY_PRO_MONTHLY_PRICE', 2499), 'yearly' => (int) env('RAZORPAY_PRO_YEARLY_PRICE', 24990)],
+                'business' => ['monthly' => (int) env('RAZORPAY_BUSINESS_MONTHLY_PRICE', 6499), 'yearly' => (int) env('RAZORPAY_BUSINESS_YEARLY_PRICE', 64990)],
+            ][$key] ?? $plan['price'];
+
             return [
                 'id' => $key,
                 'name' => $plan['name'],
                 'description' => $plan['description'],
-                'price' => $plan['price'],
+                'price' => ($gateway === 'razorpay' && $currency === 'INR') ? $inrPrice : $plan['price'],
+                'currency' => $currency,
+                'currency_symbol' => ($gateway === 'razorpay' && $currency === 'INR') ? '₹' : '$',
                 'features' => $plan['features'],
                 'limits' => $plan['limits'],
                 'popular' => $plan['popular'] ?? false,

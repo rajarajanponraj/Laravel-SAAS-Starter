@@ -81,7 +81,10 @@ fi
 
 # 2b. Ensure StackCP database credentials, APP_URL, and APP_KEY are configured in .env
 if [ -f ".env" ]; then
-    # Always enforce the subdomain URL
+    # Always enforce production environment and disable debug mode
+    echo "==> Enforcing APP_ENV=production and APP_DEBUG=false..."
+    sed -i "s|^APP_ENV=.*|APP_ENV=production|" .env
+    sed -i "s|^APP_DEBUG=.*|APP_DEBUG=false|" .env
     sed -i "s|^APP_URL=.*|APP_URL=https://crm.bytebunkers.sbs|" .env
 
     # Always ensure APP_KEY is generated and populated
@@ -113,6 +116,16 @@ if [ -f ".env" ]; then
     fi
     sed -i 's|^MAIL_FROM_ADDRESS=.*|MAIL_FROM_ADDRESS="notifications@bytebunkers.sbs"|' .env
     sed -i 's|^MAIL_FROM_NAME=.*|MAIL_FROM_NAME="CrewFlow"|' .env
+
+    # Ensure Razorpay billing gateway configuration in .env
+    if ! grep -q "^BILLING_GATEWAY=" .env 2>/dev/null; then
+        echo "==> Initializing Razorpay billing gateway configuration in .env..."
+        echo "BILLING_GATEWAY=razorpay" >> .env
+        echo "RAZORPAY_KEY_ID=" >> .env
+        echo "RAZORPAY_KEY_SECRET=" >> .env
+        echo "RAZORPAY_WEBHOOK_SECRET=" >> .env
+        echo "RAZORPAY_CURRENCY=INR" >> .env
+    fi
 fi
 
 # 3. Trap errors to ensure maintenance mode is restored if a step fails

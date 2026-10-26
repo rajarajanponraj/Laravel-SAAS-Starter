@@ -49,6 +49,7 @@ use App\Http\Controllers\MemberActivityController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OnboardingChecklistController;
 use App\Http\Controllers\OnboardingController;
+use App\Http\Controllers\RazorpayController;
 use App\Http\Controllers\ReportDashboardController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ServiceLocationController;
@@ -246,6 +247,8 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', '
         Route::get('/compare', [BillingController::class, 'compare'])->name('compare');
         Route::get('/history', [BillingController::class, 'history'])->name('history');
         Route::post('/subscribe', [BillingController::class, 'subscribe'])->name('subscribe');
+        Route::post('/razorpay/order', [RazorpayController::class, 'createOrder'])->name('razorpay.order');
+        Route::post('/razorpay/verify', [RazorpayController::class, 'verify'])->name('razorpay.verify');
         Route::post('/cancel', [BillingController::class, 'cancel'])->name('cancel');
         Route::post('/resume', [BillingController::class, 'resume'])->name('resume');
         Route::get('/portal', [BillingController::class, 'portal'])->name('portal');
@@ -379,6 +382,10 @@ Route::middleware(['auth'])->group(function () {
 // Stripe webhook (no CSRF, no auth)
 Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook'])
     ->name('cashier.webhook');
+
+// Razorpay webhook (no CSRF, no auth)
+Route::post('/razorpay/webhook', [RazorpayController::class, 'webhook'])
+    ->name('razorpay.webhook');
 
 // Public locale switch
 Route::patch('/locale', [LocaleController::class, 'update'])->name('locale.update');

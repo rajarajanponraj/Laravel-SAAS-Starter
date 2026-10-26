@@ -117,6 +117,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Active Billing Gateway & Currency
+    |--------------------------------------------------------------------------
+    */
+    'gateway' => env('BILLING_GATEWAY', 'razorpay'),
+    'currency' => env('BILLING_CURRENCY', 'INR'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Trial Period
     |--------------------------------------------------------------------------
     |
@@ -131,12 +139,22 @@ return [
     |--------------------------------------------------------------------------
     | Stripe Webhook Secret
     |--------------------------------------------------------------------------
-    |
-    | The webhook secret is used to verify that incoming webhooks are
-    | actually from Stripe. Get this from your Stripe Dashboard.
-    |
     */
 
     'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Razorpay Configuration
+    |--------------------------------------------------------------------------
+    */
+    'razorpay' => [
+        'key_id' => env('RAZORPAY_KEY_ID'),
+        'key_secret' => env('RAZORPAY_KEY_SECRET'),
+        'webhook_secret' => env('RAZORPAY_WEBHOOK_SECRET'),
+        'currency' => env('RAZORPAY_CURRENCY', 'INR'),
+        'name' => env('APP_NAME', 'CrewFlow'),
+        'theme_color' => env('RAZORPAY_THEME_COLOR', '#0f172a'),
+    ],
 
 ];

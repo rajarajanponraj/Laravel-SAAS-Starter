@@ -45,6 +45,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->validateCsrfTokens(except: [
             'stripe/*', // Exclude Stripe webhooks from CSRF
+            'razorpay/*', // Exclude Razorpay webhooks from CSRF
         ]);
 
         $middleware->web(append: [
