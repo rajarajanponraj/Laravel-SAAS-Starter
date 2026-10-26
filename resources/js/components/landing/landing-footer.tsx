@@ -1,172 +1,91 @@
-import { Github, Twitter } from '@/components/brand-icons';
 import { useTranslations } from '@/hooks/use-translations';
 import { Link } from '@inertiajs/react';
-import { Sparkles } from 'lucide-react';
+import { CheckCircle2, HardHat } from 'lucide-react';
 
 export function LandingFooter() {
     const { t } = useTranslations();
 
-    const footerLinks = {
-        product: {
-            title: t('landing.footer.cols.product.title', 'Product'),
-            links: [
-                {
-                    label: t(
-                        'landing.footer.cols.product.features',
-                        'Features',
-                    ),
-                    href: '#features',
-                },
-                {
-                    label: t('landing.footer.cols.product.faq', 'FAQ'),
-                    href: '#faq',
-                },
-                {
-                    label: t(
-                        'landing.footer.cols.product.contributing',
-                        'Contributing',
-                    ),
-                    href: 'https://github.com/xco-agency/laravel-saas-starter/blob/main/CONTRIBUTING.md',
-                },
-            ],
-        },
-        company: {
-            title: t('landing.footer.cols.company.title', 'Company'),
-            links: [
-                {
-                    label: t(
-                        'landing.footer.cols.company.about',
-                        'About XCO Agency',
-                    ),
-                    href: 'https://xco.agency',
-                },
-                {
-                    label: t('landing.footer.cols.company.contact', 'Contact'),
-                    href: 'mailto:support@xco.agency',
-                },
-            ],
-        },
-        resources: {
-            title: t('landing.footer.cols.resources.title', 'Resources'),
-            links: [
-                {
-                    label: t(
-                        'landing.footer.cols.resources.docs',
-                        'Documentation',
-                    ),
-                    href: 'https://github.com/xco-agency/laravel-saas-starter#readme',
-                },
-                {
-                    label: t('landing.footer.cols.resources.github', 'GitHub'),
-                    href: 'https://github.com/xco-agency/laravel-saas-starter',
-                },
-                {
-                    label: t('landing.footer.cols.resources.issues', 'Issues'),
-                    href: 'https://github.com/xco-agency/laravel-saas-starter/issues',
-                },
-                {
-                    label: t(
-                        'landing.footer.cols.resources.discussions',
-                        'Discussions',
-                    ),
-                    href: 'https://github.com/xco-agency/laravel-saas-starter/discussions',
-                },
-            ],
-        },
-        legal: {
-            title: t('landing.footer.cols.legal.title', 'Legal'),
-            links: [
-                {
-                    label: t('landing.footer.cols.legal.license', 'License'),
-                    href: 'https://github.com/xco-agency/laravel-saas-starter/blob/main/LICENSE',
-                },
-                {
-                    label: t(
-                        'landing.footer.cols.legal.privacy',
-                        'Privacy Policy',
-                    ),
-                    href: '#',
-                },
-            ],
-        },
-    };
-
-    const socialLinks = [
+    const footerSections = [
         {
-            icon: Github,
-            href: 'https://github.com/xco-agency/laravel-saas-starter',
-            label: t('landing.footer.social.github', 'GitHub'),
+            title: t('landing.footer.product.title', 'Product'),
+            links: [
+                { label: 'Work Orders', href: '/work-orders' },
+                { label: 'Mobile Tech Portal', href: '/my-jobs' },
+                { label: 'Customers & Sites', href: '/customers' },
+                { label: 'Checklist Templates', href: '/checklist-templates' },
+                { label: 'Automations', href: '/automations' },
+                { label: 'Field Reports', href: '/reports' },
+            ],
         },
         {
-            icon: Twitter,
-            href: '#',
-            label: t('landing.footer.social.twitter', 'Twitter'),
+            title: t('landing.footer.billing.title', 'Pricing & Billing'),
+            links: [
+                { label: 'Subscription Plans', href: '#pricing' },
+                { label: 'Razorpay UPI & Cards', href: '/billing' },
+                { label: 'Plan Comparison', href: '/billing/compare' },
+            ],
+        },
+        {
+            title: t('landing.footer.resources.title', 'Support & System'),
+            links: [
+                { label: 'Help Center', href: '/help' },
+                { label: 'System Status', href: '/status' },
+                { label: 'Product Changelog', href: '/changelog' },
+            ],
         },
     ];
+
     return (
-        <footer className="border-t border-white/10 bg-foreground text-white">
-            <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-                {/* Top section */}
-                <div className="grid gap-8 lg:grid-cols-6">
-                    {/* Logo & Description */}
-                    <div className="lg:col-span-2">
-                        <Link href="/" className="flex items-center gap-2">
-                            <div className="flex h-7 w-7 items-center justify-center rounded-sm bg-accent">
-                                <Sparkles className="h-4 w-4 text-foreground" />
+        <footer className="border-t border-border/60 bg-muted/30 pt-16 pb-12 text-foreground">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="grid gap-10 md:grid-cols-5">
+                    {/* Brand Info */}
+                    <div className="md:col-span-2 space-y-4">
+                        <Link href="/" className="inline-flex items-center gap-2.5">
+                            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
+                                <HardHat className="h-5 w-5" />
                             </div>
-                            <span className="text-base font-bold tracking-tight text-white">
-                                {t(
-                                    'landing.footer.brand',
-                                    'Laravel SAAS Starter',
-                                )}
+                            <span className="text-xl font-extrabold tracking-tight">CrewFlow</span>
+                            <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary uppercase">
+                                CRM
                             </span>
                         </Link>
-                        <p className="mt-4 max-w-xs text-sm text-white/50">
+                        <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
                             {t(
                                 'landing.footer.description',
-                                'The ultimate Laravel SaaS starter kit by XCO Agency. Build and launch your product 10x faster.',
+                                'All-in-one field service CRM and work order management platform. Purpose-built for high-performance contractors, technicians, and facility teams.',
                             )}
                         </p>
-                        {/* Social Links */}
-                        <div className="mt-6 flex gap-4">
-                            {socialLinks.map((social) => (
-                                <a
-                                    key={social.label}
-                                    href={social.href}
-                                    className="text-white/40 transition-colors hover:text-white"
-                                    aria-label={social.label}
-                                >
-                                    <social.icon className="h-5 w-5" />
-                                </a>
-                            ))}
+                        <div className="flex items-center gap-2 pt-1 text-xs text-muted-foreground">
+                            <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                            <span>All Systems Operational • Razorpay Gateway Active</span>
                         </div>
                     </div>
 
-                    {/* Links */}
-                    {Object.values(footerLinks).map((section) => (
-                        <div key={section.title}>
-                            <h3 className="text-xs font-semibold tracking-wider text-white/70 uppercase">
+                    {/* Navigation Columns */}
+                    {footerSections.map((section) => (
+                        <div key={section.title} className="space-y-3">
+                            <div className="text-xs font-bold uppercase tracking-wider text-foreground">
                                 {section.title}
-                            </h3>
-                            <ul className="mt-4 space-y-3">
+                            </div>
+                            <ul className="space-y-2 text-sm text-muted-foreground">
                                 {section.links.map((link) => (
                                     <li key={link.label}>
-                                        <a
-                                            href={link.href}
-                                            className="text-sm text-white/40 transition-colors hover:text-white"
-                                            target={
-                                                link.href.startsWith('http')
-                                                    ? '_blank'
-                                                    : undefined
-                                            }
-                                            rel={
-                                                link.href.startsWith('http')
-                                                    ? 'noopener noreferrer'
-                                                    : undefined
-                                            }
-                                        >
-                                            {link.label}
-                                        </a>
+                                        {link.href.startsWith('#') ? (
+                                            <a
+                                                href={link.href}
+                                                className="hover:text-foreground transition-colors"
+                                            >
+                                                {link.label}
+                                            </a>
+                                        ) : (
+                                            <Link
+                                                href={link.href}
+                                                className="hover:text-foreground transition-colors"
+                                            >
+                                                {link.label}
+                                            </Link>
+                                        )}
                                     </li>
                                 ))}
                             </ul>
@@ -174,15 +93,22 @@ export function LandingFooter() {
                     ))}
                 </div>
 
-                {/* Bottom section */}
-                <div className="mt-12 border-t border-white/10 pt-8">
-                    <p className="text-center text-sm text-white/30">
-                        © {new Date().getFullYear()}{' '}
-                        {t(
-                            'landing.footer.copyright',
-                            'XCO Agency. All rights reserved.',
-                        )}
+                {/* Bottom Bar */}
+                <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-border/50 pt-8 sm:flex-row text-xs text-muted-foreground">
+                    <p>
+                        © {new Date().getFullYear()} CrewFlow Inc. All rights reserved.
                     </p>
+                    <div className="flex items-center gap-6">
+                        <Link href="/help" className="hover:text-foreground transition-colors">
+                            Help
+                        </Link>
+                        <Link href="/status" className="hover:text-foreground transition-colors">
+                            Status
+                        </Link>
+                        <Link href="/changelog" className="hover:text-foreground transition-colors">
+                            Changelog
+                        </Link>
+                    </div>
                 </div>
             </div>
         </footer>

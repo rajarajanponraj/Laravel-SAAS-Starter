@@ -1,7 +1,7 @@
-import { Github } from '@/components/brand-icons';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTranslations } from '@/hooks/use-translations';
-import { Quote, Star } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { CheckCircle2, Quote, Star } from 'lucide-react';
 
 export function LandingTestimonials() {
     const { t } = useTranslations();
@@ -9,191 +9,134 @@ export function LandingTestimonials() {
     const testimonials = [
         {
             quote: t(
-                'landing.testimonials.items.sarah.quote',
-                'Laravel SAAS Starter saved us months of development time. The authentication, billing, and team management were all ready to go. We launched our MVP in just 2 weeks!',
+                'landing.testimonials.items.rajesh.quote',
+                'CrewFlow completely transformed how we dispatch 35 technicians across 200+ commercial facilities. Billing disputes dropped to zero because every completed work order includes geo-stamped photos and client signatures.',
             ),
-            author: 'Sarah Chen',
-            role: t('landing.testimonials.items.sarah.role', 'CTO at TechFlow'),
-            avatar: null,
+            author: 'Rajesh Nair',
+            role: t('landing.testimonials.items.rajesh.role', 'Operations Director, Vertex Facility Management'),
+            initials: 'RN',
             rating: 5,
+            tag: 'Commercial Facilities',
         },
         {
             quote: t(
-                'landing.testimonials.items.michael.quote',
-                "The code quality is exceptional. It's clear that experienced Laravel developers built this. The multi-workspace feature was exactly what we needed.",
+                'landing.testimonials.items.marcus.quote',
+                'Our field technicians actually love using the "My Jobs" mobile portal. They do not have to carry clipboards or dial dispatch for job details. Our turnaround time dropped from 3.5 hours to 58 minutes.',
             ),
-            author: 'Michael Rodriguez',
-            role: t(
-                'landing.testimonials.items.michael.role',
-                'Founder at DataSync',
-            ),
-            avatar: null,
+            author: 'Marcus Vance',
+            role: t('landing.testimonials.items.marcus.role', 'VP of Field Operations, Apex HVAC & Mechanical'),
+            initials: 'MV',
             rating: 5,
+            tag: 'HVAC & Mechanical',
         },
         {
             quote: t(
-                'landing.testimonials.items.emily.quote',
-                "Best SaaS starter kit I've used. The Stripe integration worked flawlessly, and the dark mode looks beautiful. Highly recommended!",
+                'landing.testimonials.items.ananya.quote',
+                'The Razorpay UPI integration and automated completion certificates make billing instantaneous. The checklist templates guarantee our safety SOPs and lockout/tagout protocols are executed with 100% compliance.',
             ),
-            author: 'Emily Watson',
-            role: t(
-                'landing.testimonials.items.emily.role',
-                'Lead Developer at CloudBase',
-            ),
-            avatar: null,
+            author: 'Ananya Sharma',
+            role: t('landing.testimonials.items.ananya.role', 'Managing Director, ElectraCore Industrial Solutions'),
+            initials: 'AS',
             rating: 5,
+            tag: 'Electrical & Industrial',
         },
     ];
 
     const stats = [
         {
-            value: '1,000+',
-            label: t('landing.testimonials.stats.stars', 'GitHub Stars'),
+            value: '50,000+',
+            label: t('landing.testimonials.stats.orders', 'Work Orders Executed'),
         },
         {
-            value: '50+',
-            label: t('landing.testimonials.stats.features', 'Features'),
+            value: '3.4x',
+            label: t('landing.testimonials.stats.speed', 'Faster Dispatch Speed'),
         },
         {
-            value: '100%',
-            label: t('landing.testimonials.stats.opensource', 'Open Source'),
+            value: '99.8%',
+            label: t('landing.testimonials.stats.compliance', 'Checklist SOP Compliance'),
         },
         {
-            value: 'MIT',
-            label: t('landing.testimonials.stats.license', 'License'),
+            value: '₹0',
+            label: t('landing.testimonials.stats.disputes', 'Unverified Invoice Disputes'),
         },
     ];
 
     return (
-        <section id="testimonials" className="py-20 sm:py-32">
+        <section id="testimonials" className="py-20 sm:py-32 bg-muted/20 relative">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 {/* Section Header */}
                 <div className="mx-auto max-w-3xl text-center">
-                    <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-                        {t('landing.testimonials.title.part1', 'Loved by')}{' '}
-                        <span className="text-primary">
-                            {t(
-                                'landing.testimonials.title.part2',
-                                'Developers',
-                            )}
-                        </span>{' '}
-                        {t('landing.testimonials.title.part3', 'Worldwide')}
+                    <Badge variant="outline" className="mb-4 text-xs font-semibold uppercase tracking-wider text-primary border-primary/30">
+                        {t('landing.testimonials.badge', 'Proven Results')}
+                    </Badge>
+                    <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+                        Trusted by Leading{' '}
+                        <span className="text-primary">Service Crews & Contractors</span>
                     </h2>
-                    <p className="mt-4 text-lg text-muted-foreground">
+                    <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
                         {t(
                             'landing.testimonials.description',
-                            "Don't just take our word for it. Here's what developers are saying about Laravel SAAS Starter.",
+                            'See how facility managers, maintenance supervisors, and trade specialists run more profitable field operations with CrewFlow.',
                         )}
                     </p>
                 </div>
 
-                {/* Stats */}
-                <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                    {stats.map((stat) => (
-                        <div
-                            key={stat.label}
-                            className="rounded-md border bg-card p-4 text-center"
+                {/* Testimonials Grid */}
+                <div className="mt-14 grid gap-8 md:grid-cols-3">
+                    {testimonials.map((testimonial) => (
+                        <Card
+                            key={testimonial.author}
+                            className="flex flex-col justify-between border-border/70 bg-card/80 p-6 shadow-sm backdrop-blur-sm transition-all hover:shadow-md"
                         >
-                            <div className="text-2xl font-bold text-foreground tabular-nums sm:text-3xl">
-                                {stat.value}
-                            </div>
-                            <div className="mt-1 text-xs font-medium tracking-wider text-muted-foreground uppercase">
-                                {stat.label}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Testimonials */}
-                <div className="mt-10 grid gap-4 md:grid-cols-3">
-                    {testimonials.map((testimonial, index) => (
-                        <Card key={index} className="relative">
-                            <CardContent className="pt-5">
-                                <Quote className="h-6 w-6 text-muted-foreground/30" />
-
-                                {/* Stars */}
-                                <div className="mt-3 flex gap-0.5">
-                                    {Array.from({
-                                        length: testimonial.rating,
-                                    }).map((_, i) => (
-                                        <Star
-                                            key={i}
-                                            className="h-3.5 w-3.5 fill-accent text-accent"
-                                        />
-                                    ))}
+                            <CardContent className="p-0">
+                                <div className="flex items-center justify-between mb-4">
+                                    <div className="flex gap-0.5 text-amber-500">
+                                        {[...Array(testimonial.rating)].map((_, i) => (
+                                            <Star
+                                                key={i}
+                                                className="h-4 w-4 fill-amber-500"
+                                            />
+                                        ))}
+                                    </div>
+                                    <span className="rounded bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                                        {testimonial.tag}
+                                    </span>
                                 </div>
-
-                                {/* Quote */}
-                                <blockquote className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                                <Quote className="h-6 w-6 text-primary/30 mb-2" />
+                                <p className="text-sm text-foreground/90 leading-relaxed italic">
                                     "{testimonial.quote}"
-                                </blockquote>
+                                </p>
+                            </CardContent>
 
-                                {/* Author */}
-                                <div className="mt-5 flex items-center gap-3">
-                                    <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-foreground text-xs font-semibold text-background">
-                                        {testimonial.author
-                                            .split(' ')
-                                            .map((n) => n[0])
-                                            .join('')}
+                            <div className="mt-6 flex items-center gap-3 border-t border-border/50 pt-4">
+                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                                    {testimonial.initials}
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                    <div className="font-semibold text-sm text-foreground truncate">
+                                        {testimonial.author}
                                     </div>
-                                    <div>
-                                        <div className="text-sm font-medium">
-                                            {testimonial.author}
-                                        </div>
-                                        <div className="text-xs text-muted-foreground">
-                                            {testimonial.role}
-                                        </div>
+                                    <div className="text-xs text-muted-foreground truncate">
+                                        {testimonial.role}
                                     </div>
                                 </div>
-                            </CardContent>
+                            </div>
                         </Card>
                     ))}
                 </div>
 
-                {/* GitHub Stats */}
-                <div className="mt-16">
-                    <p className="text-center text-sm text-muted-foreground">
-                        {t(
-                            'landing.testimonials.community.join',
-                            'Join the community',
-                        )}
-                    </p>
-                    <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
-                        <a
-                            href="https://github.com/xco-agency/laravel-saas-starter"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted"
-                        >
-                            <Github className="h-4 w-4" />
-                            {t(
-                                'landing.testimonials.community.star',
-                                'Star on GitHub',
-                            )}
-                        </a>
-                        <a
-                            href="https://github.com/xco-agency/laravel-saas-starter/issues"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted"
-                        >
-                            {t(
-                                'landing.testimonials.community.issues',
-                                'Report Issues',
-                            )}
-                        </a>
-                        <a
-                            href="https://github.com/xco-agency/laravel-saas-starter/discussions"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted"
-                        >
-                            {t(
-                                'landing.testimonials.community.discussions',
-                                'Join Discussions',
-                            )}
-                        </a>
-                    </div>
+                {/* KPI Bar */}
+                <div className="mt-16 grid grid-cols-2 gap-4 rounded-2xl border border-border/70 bg-card/60 p-6 shadow-sm md:grid-cols-4 md:p-8">
+                    {stats.map((stat) => (
+                        <div key={stat.label} className="text-center">
+                            <div className="text-3xl font-extrabold tracking-tight text-foreground md:text-4xl font-mono">
+                                {stat.value}
+                            </div>
+                            <div className="mt-1 text-xs font-medium text-muted-foreground">
+                                {stat.label}
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>

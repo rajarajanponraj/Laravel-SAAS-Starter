@@ -23,35 +23,35 @@ export default function Welcome({
             <Head
                 title={t(
                     'landing.meta.title',
-                    'Laravel SAAS Starter - Launch Your SaaS 10x Faster',
+                    'CrewFlow - Field Service & Work Order CRM for Modern Operations',
                 )}
             >
                 <meta
                     name="description"
                     content={t(
                         'landing.meta.description',
-                        'Laravel SAAS Starter is a production-ready Laravel SaaS starter kit with authentication, billing, teams, and everything you need to launch faster. Built by XCO Agency.',
+                        'All-in-one field service CRM and work order management software. Dispatch technicians in seconds, track mobile jobs, capture verified photo & signature evidence, and automate billing with Razorpay.',
                     )}
                 />
                 <meta
                     name="keywords"
                     content={t(
                         'landing.meta.keywords',
-                        'laravel, saas, starter kit, boilerplate, authentication, stripe, billing, teams',
+                        'field service crm, work order management, technician dispatching, mobile checklist, contractor software, hvac crm, maintenance management, razorpay payments, photo evidence',
                     )}
                 />
                 <meta
                     property="og:title"
                     content={t(
                         'landing.meta.og_title',
-                        'Laravel SAAS Starter - Launch Your SaaS 10x Faster',
+                        'CrewFlow - Field Service & Work Order CRM for Modern Operations',
                     )}
                 />
                 <meta
                     property="og:description"
                     content={t(
                         'landing.meta.og_description',
-                        'Production-ready Laravel SaaS starter kit. 100% free and open source. Launch your SaaS 10x faster with authentication, billing, teams, and more.',
+                        'Dispatch work orders, track mobile technicians, enforce safety checklists, and capture verified proof of work with CrewFlow.',
                     )}
                 />
                 <meta property="og:type" content="website" />
@@ -60,24 +60,24 @@ export default function Welcome({
                     name="twitter:title"
                     content={t(
                         'landing.meta.twitter_title',
-                        'Laravel SAAS Starter - Launch Your SaaS 10x Faster',
+                        'CrewFlow - Field Service & Work Order CRM',
                     )}
                 />
                 <meta
                     name="twitter:description"
                     content={t(
                         'landing.meta.twitter_description',
-                        'Production-ready Laravel SaaS starter kit by XCO Agency.',
+                        'Modern field operations and work order management software for high-efficiency service crews.',
                     )}
                 />
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link
-                    href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700,800"
+                    href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&instrument-sans:400,500,600,700,800"
                     rel="stylesheet"
                 />
             </Head>
 
-            <div className="min-h-screen bg-background text-foreground">
+            <div className="min-h-screen bg-background text-foreground selection:bg-primary/20 selection:text-primary">
                 <LandingHeader canRegister={canRegister} />
                 <main>
                     <LandingHero />

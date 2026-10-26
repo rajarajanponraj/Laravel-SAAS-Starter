@@ -29,7 +29,7 @@ export default function AuthSimpleLayout({
                         <div className="flex h-7 w-7 items-center justify-center rounded-sm bg-accent">
                             <Sparkles className="h-4 w-4 text-foreground" />
                         </div>
-                        <span className="text-base text-white">Laravel SAAS Starter</span>
+                        <span className="text-base text-white font-bold tracking-tight">CrewFlow</span>
                     </Link>
                     <Link
                         href={home()}
@@ -46,15 +46,15 @@ export default function AuthSimpleLayout({
                         <h2 className="text-4xl leading-tight font-bold text-white">
                             {t(
                                 'auth.layout.hero.title_line1',
-                                'Launch Your SaaS',
+                                'Field Operations CRM',
                             )}
                             <br />
-                            <span className="text-accent">{t('auth.layout.hero.title_line2', '10x Faster')}</span>
+                            <span className="text-accent">{t('auth.layout.hero.title_line2', 'Built for Crews')}</span>
                         </h2>
-                        <p className="text-lg text-white/50">
+                        <p className="text-lg text-white/70">
                             {t(
                                 'auth.layout.hero.description',
-                                'Join thousands of developers building and shipping with Laravel SAAS Starter.',
+                                'Dispatch work orders, track mobile technicians in real time, and capture verified proof of work.',
                             )}
                         </p>
                     </div>
@@ -67,12 +67,12 @@ export default function AuthSimpleLayout({
                             </div>
                             <div>
                                 <div className="text-2xl font-bold tabular-nums text-white">
-                                    10,000+
+                                    50,000+
                                 </div>
-                                <div className="text-sm text-white/40">
+                                <div className="text-sm text-white/60">
                                     {t(
-                                        'auth.layout.stats.developers',
-                                        'Developers',
+                                        'auth.layout.stats.work_orders',
+                                        'Jobs Dispatched',
                                     )}
                                 </div>
                             </div>
@@ -82,11 +82,11 @@ export default function AuthSimpleLayout({
                                 <CheckCircle className="h-5 w-5 text-white/70" />
                             </div>
                             <div>
-                                <div className="text-2xl font-bold tabular-nums text-white">500+</div>
-                                <div className="text-sm text-white/40">
+                                <div className="text-2xl font-bold tabular-nums text-white">99.4%</div>
+                                <div className="text-sm text-white/60">
                                     {t(
-                                        'auth.layout.stats.apps_launched',
-                                        'Apps Launched',
+                                        'auth.layout.stats.on_time',
+                                        'On-Time Resolution',
                                     )}
                                 </div>
                             </div>
@@ -96,29 +96,29 @@ export default function AuthSimpleLayout({
                     {/* Testimonial */}
                     <div className="rounded-md border border-white/10 bg-white/5 p-5">
                         <Quote className="mb-3 h-6 w-6 text-white/20" />
-                        <p className="mb-4 text-sm leading-relaxed text-white/70">
+                        <p className="mb-4 text-sm leading-relaxed text-white/80">
                             "
                             {t(
                                 'auth.layout.testimonial.quote',
-                                'Laravel SAAS Starter saved us months of development time. We launched our MVP in just 2 weeks!',
+                                'CrewFlow gave us instant visibility over our field crews across 12 cities. Work order dispatch turnaround dropped from 45 minutes to under 3 minutes.',
                             )}
                             "
                         </p>
                         <div className="flex items-center gap-3">
                             <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-accent text-xs font-semibold text-foreground">
-                                SC
+                                MV
                             </div>
                             <div>
                                 <div className="text-sm font-medium text-white">
                                     {t(
                                         'auth.layout.testimonial.author',
-                                        'Sarah Chen',
+                                        'Marcus Vance',
                                     )}
                                 </div>
-                                <div className="text-xs text-white/40">
+                                <div className="text-xs text-white/60">
                                     {t(
                                         'auth.layout.testimonial.role',
-                                        'CTO at TechFlow',
+                                        'VP of Field Operations, Apex Services',
                                     )}
                                 </div>
                             </div>
@@ -127,11 +127,11 @@ export default function AuthSimpleLayout({
                 </div>
 
                 {/* Footer */}
-                <div className="text-xs text-white/30">
+                <div className="text-xs text-white/40">
                     © {new Date().getFullYear()}{' '}
                     {t(
                         'auth.layout.copyright',
-                        'XCO Agency. All rights reserved.',
+                        'CrewFlow Inc. All rights reserved.',
                     )}
                 </div>
             </div>
@@ -147,7 +147,7 @@ export default function AuthSimpleLayout({
                         <div className="flex h-7 w-7 items-center justify-center rounded-sm bg-foreground">
                             <Sparkles className="h-4 w-4 text-background" />
                         </div>
-                        <span className="text-base">Laravel SAAS Starter</span>
+                        <span className="text-base font-bold tracking-tight">CrewFlow</span>
                     </Link>
                     <AppearanceToggleDropdown />
                 </div>

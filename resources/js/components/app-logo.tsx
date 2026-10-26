@@ -7,8 +7,11 @@ export default function AppLogo() {
                 <AppLogoIcon className="size-5 fill-current text-white dark:text-black" />
             </div>
             <div className="ml-1 grid flex-1 text-left text-sm">
-                <span className="mb-0.5 truncate leading-tight font-semibold">
-                    Laravel Starter Kit
+                <span className="mb-0.5 truncate leading-tight font-semibold tracking-tight">
+                    CrewFlow
+                </span>
+                <span className="truncate text-xs text-muted-foreground font-normal">
+                    Field CRM & Work Orders
                 </span>
             </div>
         </>

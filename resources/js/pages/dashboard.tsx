@@ -18,8 +18,12 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import {
     ArrowRight,
     Building2,
+    ClipboardList,
     CreditCard,
     Crown,
+    FileSpreadsheet,
+    HardHat,
+    ListChecks,
     Plus,
     Settings,
     Sparkles,
@@ -46,48 +50,92 @@ export default function Dashboard() {
 
     const quickActions = [
         {
-            title: t('dashboard.invite_team_member', 'Invite Team Member'),
+            title: t('dashboard.work_orders', 'Work Orders'),
+            description: t(
+                'dashboard.work_orders_desc',
+                'Create and dispatch field jobs',
+            ),
+            icon: ClipboardList,
+            href: '/work-orders',
+            color: 'text-blue-500',
+            id: 'nav-work-orders',
+        },
+        {
+            title: t('dashboard.customers', 'Customers & Sites'),
+            description: t(
+                'dashboard.customers_desc',
+                'Manage clients & service locations',
+            ),
+            icon: Building2,
+            href: '/customers',
+            color: 'text-indigo-500',
+            id: 'nav-customers',
+        },
+        {
+            title: t('dashboard.my_jobs', 'My Field Jobs'),
+            description: t(
+                'dashboard.my_jobs_desc',
+                'Technician checklist & execution',
+            ),
+            icon: HardHat,
+            href: '/my-jobs',
+            color: 'text-amber-500',
+            id: 'nav-my-jobs',
+        },
+        {
+            title: t('dashboard.checklists', 'Checklists & SOPs'),
+            description: t(
+                'dashboard.checklists_desc',
+                'Safety inspection templates',
+            ),
+            icon: ListChecks,
+            href: '/checklist-templates',
+            color: 'text-emerald-500',
+            id: 'nav-checklists',
+        },
+        {
+            title: t('dashboard.reports', 'Field Reports'),
+            description: t(
+                'dashboard.reports_desc',
+                'Turnaround times & analytics',
+            ),
+            icon: FileSpreadsheet,
+            href: '/reports',
+            color: 'text-cyan-500',
+            id: 'nav-reports',
+        },
+        {
+            title: t('dashboard.automations', 'Automations'),
+            description: t(
+                'dashboard.automations_desc',
+                'Status triggers & event rules',
+            ),
+            icon: Zap,
+            href: '/automations',
+            color: 'text-yellow-500',
+            id: 'nav-automations',
+        },
+        {
+            title: t('dashboard.invite_team_member', 'Team & Dispatch'),
             description: t(
                 'dashboard.invite_team_member_desc',
-                'Add a colleague to your workspace',
+                'Manage technicians and dispatchers',
             ),
             icon: Users,
             href: '/team',
-            color: 'text-blue-500',
+            color: 'text-violet-500',
             id: 'nav-team',
         },
         {
-            title: t('dashboard.manage_billing_title', 'Manage Billing'),
+            title: t('dashboard.manage_billing_title', 'Billing & Plans'),
             description: t(
                 'dashboard.manage_billing_desc',
-                'View plans and invoices',
+                'Razorpay subscriptions & invoices',
             ),
             icon: CreditCard,
             href: '/billing',
             color: 'text-green-500',
             id: 'nav-billing',
-        },
-        {
-            title: t('dashboard.workspace_settings', 'Workspace Settings'),
-            description: t(
-                'dashboard.workspace_settings_desc',
-                'Configure your workspace',
-            ),
-            icon: Settings,
-            href: '/workspaces/settings',
-            color: 'text-purple-500',
-            id: 'nav-settings',
-        },
-        {
-            title: t('dashboard.create_workspace', 'Create Workspace'),
-            description: t(
-                'dashboard.create_workspace_desc',
-                'Start a new project',
-            ),
-            icon: Plus,
-            href: '/workspaces/create',
-            color: 'text-orange-500',
-            id: undefined,
         },
     ];
 

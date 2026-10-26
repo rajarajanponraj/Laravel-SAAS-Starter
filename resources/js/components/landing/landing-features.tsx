@@ -1,199 +1,218 @@
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslations } from '@/hooks/use-translations';
 import {
+    ArrowRight,
     Building2,
+    Camera,
+    CheckCircle2,
+    ClipboardList,
     CreditCard,
-    Globe,
-    LayoutDashboard,
-    Lock,
-    Megaphone,
-    Moon,
-    Palette,
-    ScrollText,
-    ToggleLeft,
-    Users,
+    FileSpreadsheet,
+    HardHat,
+    ListChecks,
+    MapPin,
+    ShieldCheck,
+    Smartphone,
+    UserCheck,
     Zap,
 } from 'lucide-react';
 
 export function LandingFeatures() {
     const { t } = useTranslations();
 
-    const features = [
+    const mainFeatures = [
         {
-            icon: Lock,
-            title: t(
-                'landing.features.items.auth.title',
-                'Authentication & 2FA',
-            ),
+            icon: ClipboardList,
+            title: t('landing.features.dispatch.title', 'Smart Work Order Dispatching'),
             description: t(
-                'landing.features.items.auth.description',
-                'Complete auth system with login, register, password reset, email verification, and two-factor authentication.',
+                'landing.features.dispatch.desc',
+                'Create, schedule, and assign maintenance and service tickets in seconds. Filter by priority, equipment type, and technician skill sets with live status tracking.',
             ),
+            badge: 'Core Workflow',
             color: 'text-blue-500',
             bgColor: 'bg-blue-500/10',
+            borderColor: 'border-blue-500/20',
+        },
+        {
+            icon: HardHat,
+            title: t('landing.features.worker.title', 'Mobile Field Tech Portal ("My Jobs")'),
+            description: t(
+                'landing.features.worker.desc',
+                'A lightweight, mobile-first experience built for field staff. Technicians view their daily queue, map service routes, and record job progress without cluttered menus.',
+            ),
+            badge: 'Mobile First',
+            color: 'text-amber-500',
+            bgColor: 'bg-amber-500/10',
+            borderColor: 'border-amber-500/20',
+        },
+        {
+            icon: ListChecks,
+            title: t('landing.features.checklists.title', 'Digital SOPs & Safety Checklists'),
+            description: t(
+                'landing.features.checklists.desc',
+                'Enforce safety compliance and quality standards. Require technicians to step through mandatory checklists before marking jobs complete.',
+            ),
+            badge: 'Zero Errors',
+            color: 'text-emerald-500',
+            bgColor: 'bg-emerald-500/10',
+            borderColor: 'border-emerald-500/20',
+        },
+        {
+            icon: ShieldCheck,
+            title: t('landing.features.evidence.title', 'Verified Photo & Signature Evidence'),
+            description: t(
+                'landing.features.evidence.desc',
+                'Eliminate invoice disputes forever. Capture timestamped before/after photos and on-screen customer signature sign-offs recorded directly on the work order.',
+            ),
+            badge: 'Audit Ready',
+            color: 'text-purple-500',
+            bgColor: 'bg-purple-500/10',
+            borderColor: 'border-purple-500/20',
         },
         {
             icon: Building2,
-            title: t(
-                'landing.features.items.workspaces.title',
-                'Multi-tenant Workspaces',
-            ),
+            title: t('landing.features.customers.title', 'Customer & Multi-Site Directory'),
             description: t(
-                'landing.features.items.workspaces.description',
-                'Built-in workspace management allowing users to create and switch between multiple organizations.',
+                'landing.features.customers.desc',
+                'Centralize client accounts, branch facility locations, equipment models, past service logs, and site contact coordinates in one searchable hub.',
             ),
-            color: 'text-purple-500',
-            bgColor: 'bg-purple-500/10',
-        },
-        {
-            icon: Users,
-            title: t('landing.features.items.team.title', 'Team Management'),
-            description: t(
-                'landing.features.items.team.description',
-                'Invite team members, assign roles (owner, admin, member), and manage permissions with ease.',
-            ),
-            color: 'text-green-500',
-            bgColor: 'bg-green-500/10',
-        },
-        {
-            icon: CreditCard,
-            title: t('landing.features.items.billing.title', 'Stripe Billing'),
-            description: t(
-                'landing.features.items.billing.description',
-                'Full Stripe integration with subscriptions, invoices, billing portal, and multiple pricing tiers.',
-            ),
-            color: 'text-orange-500',
-            bgColor: 'bg-orange-500/10',
-        },
-        {
-            icon: LayoutDashboard,
-            title: t('landing.features.items.admin.title', 'Super Admin Panel'),
-            description: t(
-                'landing.features.items.admin.description',
-                'Global dashboard to monitor workspaces, impersonate users, and oversee the entire SaaS platform.',
-            ),
-            color: 'text-rose-500',
-            bgColor: 'bg-rose-500/10',
-        },
-        {
-            icon: ToggleLeft,
-            title: t('landing.features.items.flags.title', 'Feature Flags'),
-            description: t(
-                'landing.features.items.flags.description',
-                'Native Laravel Pennant integration to roll out features globally or target specific workspaces.',
-            ),
-            color: 'text-amber-500',
-            bgColor: 'bg-amber-500/10',
-        },
-        {
-            icon: ScrollText,
-            title: t('landing.features.items.audit.title', 'Audit Logging'),
-            description: t(
-                'landing.features.items.audit.description',
-                'Comprehensive activity tracking of system changes, property diffs, and administrative actions.',
-            ),
-            color: 'text-teal-500',
-            bgColor: 'bg-teal-500/10',
-        },
-        {
-            icon: Megaphone,
-            title: t(
-                'landing.features.items.announcements.title',
-                'Global Announcements',
-            ),
-            description: t(
-                'landing.features.items.announcements.description',
-                'Schedule and broadcast custom, highly visible alert banners to all authenticated users.',
-            ),
+            badge: '360° Visibility',
             color: 'text-indigo-500',
             bgColor: 'bg-indigo-500/10',
-        },
-        {
-            icon: Globe,
-            title: t(
-                'landing.features.items.i18n.title',
-                'Internationalization',
-            ),
-            description: t(
-                'landing.features.items.i18n.description',
-                'Multi-language support with RTL layouts. Easily add new languages and translations.',
-            ),
-            color: 'text-cyan-500',
-            bgColor: 'bg-cyan-500/10',
-        },
-        {
-            icon: Moon,
-            title: t('landing.features.items.dark_mode.title', 'Dark Mode'),
-            description: t(
-                'landing.features.items.dark_mode.description',
-                'Beautiful light and dark themes with system preference detection and manual toggle.',
-            ),
-            color: 'text-slate-500 dark:text-slate-400',
-            bgColor: 'bg-slate-500/10 dark:bg-slate-400/10',
+            borderColor: 'border-indigo-500/20',
         },
         {
             icon: Zap,
-            title: t('landing.features.items.stack.title', 'Modern Stack'),
+            title: t('landing.features.automations.title', 'Automated Event Triggers & Alerts'),
             description: t(
-                'landing.features.items.stack.description',
-                'Laravel 12, Inertia.js v2, React 19, and Tailwind CSS v4 for a blazing-fast developer experience.',
+                'landing.features.automations.desc',
+                'Set up rules that trigger instantly: send automated customer emails when work orders are scheduled, notify dispatchers of SLA breaches, and generate job reports.',
             ),
+            badge: 'Hands Free',
             color: 'text-yellow-500',
             bgColor: 'bg-yellow-500/10',
+            borderColor: 'border-yellow-500/20',
         },
         {
-            icon: Palette,
-            title: t('landing.features.items.ui.title', 'Beautiful UI'),
+            icon: FileSpreadsheet,
+            title: t('landing.features.reports.title', 'Field Turnaround & Revenue Analytics'),
             description: t(
-                'landing.features.items.ui.description',
-                'Pre-built components with shadcn/ui design system. Fully customizable and accessible.',
+                'landing.features.reports.desc',
+                'Monitor team efficiency, average resolution time, work order completion volume, and revenue per customer with exportable Excel and PDF reports.',
             ),
-            color: 'text-pink-500',
-            bgColor: 'bg-pink-500/10',
+            badge: 'Real-Time Insights',
+            color: 'text-cyan-500',
+            bgColor: 'bg-cyan-500/10',
+            borderColor: 'border-cyan-500/20',
+        },
+        {
+            icon: CreditCard,
+            title: t('landing.features.billing.title', 'Instant Razorpay UPI & Card Billing'),
+            description: t(
+                'landing.features.billing.desc',
+                'Integrated with India’s leading payment gateway. Subscribe to Pro or Business tiers seamlessly using Google Pay, PhonePe, Paytm, Cards, and NetBanking.',
+            ),
+            badge: 'Seamless Payments',
+            color: 'text-teal-500',
+            bgColor: 'bg-teal-500/10',
+            borderColor: 'border-teal-500/20',
         },
     ];
 
     return (
-        <section id="features" className="py-20 sm:py-32">
+        <section id="features" className="py-20 sm:py-28 bg-muted/20 relative">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 {/* Section Header */}
                 <div className="mx-auto max-w-3xl text-center">
-                    <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-                        {t(
-                            'landing.features.title.part1',
-                            'Everything You Need to',
-                        )}{' '}
-                        <span className="text-primary">
-                            {t('landing.features.title.part2', 'Ship Faster')}
-                        </span>
+                    <Badge variant="outline" className="mb-4 text-xs font-semibold uppercase tracking-wider text-primary border-primary/30">
+                        {t('landing.features.badge', 'Built For Modern Operations')}
+                    </Badge>
+                    <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+                        Everything You Need to Run{' '}
+                        <span className="text-primary">Flawless Field Service</span>
                     </h2>
-                    <p className="mt-4 text-lg text-muted-foreground">
+                    <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
                         {t(
-                            'landing.features.description',
-                            'Stop wasting weeks on boilerplate. Everything you need is included and ready to use. Focus on building what makes your product unique.',
+                            'landing.features.subtitle',
+                            'Replace disconnected spreadsheets, paper clipboards, and WhatsApp threads with a unified CRM platform purpose-built for trade and field service operations.',
                         )}
                     </p>
                 </div>
 
-                {/* Features Grid */}
-                <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {features.map((feature) => (
-                        <div
+                {/* Features Bento / Grid */}
+                <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    {mainFeatures.map((feature) => (
+                        <Card
                             key={feature.title}
-                            className="group relative rounded-md border bg-card p-5 transition-colors hover:border-primary/40 hover:bg-card"
+                            className={`group relative overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-lg border-border/70 bg-card/80 backdrop-blur-sm ${feature.borderColor}`}
                         >
-                            <div
-                                className={`inline-flex h-10 w-10 items-center justify-center rounded-md ${feature.bgColor}`}
-                            >
-                                <feature.icon className={`h-5 w-5 ${feature.color}`} />
+                            <CardHeader className="pb-3">
+                                <div className="flex items-center justify-between">
+                                    <div
+                                        className={`flex h-11 w-11 items-center justify-center rounded-lg ${feature.bgColor} ${feature.color}`}
+                                    >
+                                        <feature.icon className="h-6 w-6" />
+                                    </div>
+                                    <span className="rounded-full bg-muted px-2.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                                        {feature.badge}
+                                    </span>
+                                </div>
+                                <CardTitle className="mt-4 text-lg font-bold text-foreground">
+                                    {feature.title}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                    {feature.description}
+                                </p>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+
+                {/* Interactive Workflow Highlight (How It Works) */}
+                <div id="solutions" className="mt-20 rounded-2xl border border-border/80 bg-gradient-to-b from-card to-background p-6 sm:p-10 shadow-sm">
+                    <div className="mx-auto max-w-2xl text-center mb-12">
+                        <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                            Field Execution Lifecycle
+                        </span>
+                        <h3 className="mt-2 text-2xl font-bold text-foreground sm:text-3xl">
+                            How CrewFlow Streamlines Every Work Order
+                        </h3>
+                    </div>
+
+                    <div className="grid gap-8 md:grid-cols-3">
+                        <div className="relative space-y-3 rounded-xl border border-border/60 bg-muted/30 p-6">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary font-bold text-primary-foreground">
+                                1
                             </div>
-                            <h3 className="mt-3 text-sm font-semibold">
-                                {feature.title}
-                            </h3>
-                            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                                {feature.description}
+                            <h4 className="text-lg font-bold text-foreground">Dispatch & Route</h4>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                                Office dispatcher logs customer request, selects service location, attaches the correct SOP checklist, and assigns the job to an available technician.
                             </p>
                         </div>
-                    ))}
+
+                        <div className="relative space-y-3 rounded-xl border border-border/60 bg-muted/30 p-6">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-500 font-bold text-white">
+                                2
+                            </div>
+                            <h4 className="text-lg font-bold text-foreground">Field Execution</h4>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                                Technician gets instant notification on mobile, navigates to the site, checks off inspection items, snaps before/after photos, and logs actual hours.
+                            </p>
+                        </div>
+
+                        <div className="relative space-y-3 rounded-xl border border-border/60 bg-muted/30 p-6">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500 font-bold text-white">
+                                3
+                            </div>
+                            <h4 className="text-lg font-bold text-foreground">Sign-Off & Invoice</h4>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                                Customer inspects the work and signs on the technician's mobile screen. An automated completion report with photos is instantly emailed to the client.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
