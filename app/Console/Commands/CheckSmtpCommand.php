@@ -32,7 +32,7 @@ class CheckSmtpCommand extends Command
         $defaultMailer = config('mail.default', 'log');
         $smtpConfig = config("mail.mailers.{$defaultMailer}", []);
         $host = $smtpConfig['host'] ?? null;
-        $port = $smtpConfig['port'] ?? 587;
+        $port = $smtpConfig['port'] ?? 465;
         $username = $smtpConfig['username'] ?? null;
         $password = $smtpConfig['password'] ?? null;
         $fromAddress = config('mail.from.address', 'noreply@example.com');

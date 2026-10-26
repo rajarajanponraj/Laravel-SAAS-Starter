@@ -10,7 +10,7 @@ Route::get('/mail-status', function () {
     $default = config('mail.default', 'log');
     $smtp = config("mail.mailers.{$default}", []);
     $host = $smtp['host'] ?? null;
-    $port = (int) ($smtp['port'] ?? 587);
+    $port = (int) ($smtp['port'] ?? 465);
     $username = $smtp['username'] ?? null;
     $password = $smtp['password'] ?? null;
 
