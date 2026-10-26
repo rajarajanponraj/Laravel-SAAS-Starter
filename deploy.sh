@@ -97,6 +97,19 @@ if [ -f ".env" ]; then
         sed -i "s|^DB_USERNAME=.*|DB_USERNAME=wfa-crm-3130313f75|" .env
         sed -i 's|^DB_PASSWORD=.*|DB_PASSWORD="rtbepa-cet5rC-zmyxtg"|' .env
     fi
+
+    # Configure StackCP SMTP mail credentials in .env
+    if grep -q "your_email_password" .env 2>/dev/null || ! grep -q "^MAIL_PASSWORD=" .env 2>/dev/null || grep -q 'MAIL_PASSWORD=""' .env 2>/dev/null; then
+        echo "==> Configuring StackCP SMTP mail credentials in .env..."
+        sed -i "s|^MAIL_MAILER=.*|MAIL_MAILER=smtp|" .env
+        sed -i "s|^MAIL_HOST=.*|MAIL_HOST=mail.bytebunkers.sbs|" .env
+        sed -i "s|^MAIL_PORT=.*|MAIL_PORT=587|" .env
+        sed -i "s|^MAIL_USERNAME=.*|MAIL_USERNAME=notifications@bytebunkers.sbs|" .env
+        sed -i 's|^MAIL_PASSWORD=.*|MAIL_PASSWORD="zWkjmd-yac6eh-cdchcu"|' .env
+        sed -i "s|^MAIL_ENCRYPTION=.*|MAIL_ENCRYPTION=tls|" .env
+        sed -i 's|^MAIL_FROM_ADDRESS=.*|MAIL_FROM_ADDRESS="notifications@bytebunkers.sbs"|' .env
+        sed -i 's|^MAIL_FROM_NAME=.*|MAIL_FROM_NAME="CrewFlow"|' .env
+    fi
 fi
 
 # 3. Trap errors to ensure maintenance mode is restored if a step fails
