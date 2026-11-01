@@ -82,7 +82,7 @@ export default function EditWorkOrder({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={`Edit ${workOrder.order_number} - CrewFlow`} />
+            <Head title={`Edit ${workOrder.order_number} - CrewBunker`} />
 
             <div className="flex flex-1 flex-col gap-6 p-6 max-w-4xl">
                 <div className="flex items-center gap-3">

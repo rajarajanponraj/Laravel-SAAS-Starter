@@ -10,12 +10,12 @@ it('displays the mail configuration table via mail:check command', function () {
         'mail.mailers.smtp.username' => 'test@example.com',
         'mail.mailers.smtp.password' => 'secret123',
         'mail.from.address' => 'system@example.com',
-        'mail.from.name' => 'CrewFlow Test',
+        'mail.from.name' => 'CrewBunker Test',
     ]);
 
     // Command should run, output the table, and attempt TCP check
     $this->artisan('mail:check')
-        ->expectsOutputToContain('[CrewFlow Mail Diagnostics]')
+        ->expectsOutputToContain('[CrewBunker Mail Diagnostics]')
         ->expectsOutputToContain('127.0.0.1');
 });
 

@@ -32,7 +32,7 @@ class DeployDatabaseCommand extends Command
 
     public function handle(WorkspaceService $workspaceService): int
     {
-        $this->info('==> [CrewFlow DB Deploy] Starting database deployment routine...');
+        $this->info('==> [CrewBunker DB Deploy] Starting database deployment routine...');
 
         // 1. Ensure backup directory exists
         $backupDir = storage_path('app/backups');
@@ -69,7 +69,7 @@ class DeployDatabaseCommand extends Command
             $this->seedInitialDataIfEmpty($workspaceService);
         }
 
-        $this->info('==> [CrewFlow DB Deploy] Database deployment completed successfully.');
+        $this->info('==> [CrewBunker DB Deploy] Database deployment completed successfully.');
 
         return 0;
     }
@@ -173,7 +173,7 @@ class DeployDatabaseCommand extends Command
         DB::transaction(function () use ($workspaceService, $adminEmail, $initialPassword) {
             // 1. Create Superadmin User
             $superadmin = User::create([
-                'name' => 'CrewFlow Admin',
+                'name' => 'CrewBunker Admin',
                 'email' => $adminEmail,
                 'password' => Hash::make($initialPassword),
                 'email_verified_at' => now(),
@@ -184,7 +184,7 @@ class DeployDatabaseCommand extends Command
 
             // 2. Create Default Team Workspace
             $workspace = $workspaceService->create($superadmin, [
-                'name' => 'CrewFlow Operations',
+                'name' => 'CrewBunker Operations',
             ]);
             $workspace->update(['plan_override' => 'pro']);
 
@@ -218,7 +218,7 @@ class DeployDatabaseCommand extends Command
             // 4. Save initial credentials file
             $credsFile = storage_path('logs/initial_credentials.txt');
             File::ensureDirectoryExists(dirname($credsFile));
-            $credsContent = "CrewFlow Initial Superadmin Credentials\n"
+            $credsContent = "CrewBunker Initial Superadmin Credentials\n"
                 ."========================================\n"
                 .'Generated At : '.now()->toDateTimeString()."\n"
                 .'Login URL    : '.config('app.url')."/login\n"

@@ -11,11 +11,11 @@ export function LandingFaq() {
         {
             question: t(
                 'landing.faq.items.who_uses.question',
-                'What types of businesses use CrewFlow?',
+                'What types of businesses use CrewBunker?',
             ),
             answer: t(
                 'landing.faq.items.who_uses.answer',
-                'CrewFlow is built for commercial HVAC, electrical contractors, plumbing & mechanical specialists, facilities management companies, solar installers, elevator maintenance crews, and any field service organization managing mobile technicians and work orders.',
+                'CrewBunker is built for commercial HVAC, electrical contractors, plumbing & mechanical specialists, facilities management companies, solar installers, elevator maintenance crews, and any field service organization managing mobile technicians and work orders.',
             ),
         },
         {
@@ -25,7 +25,7 @@ export function LandingFaq() {
             ),
             answer: t(
                 'landing.faq.items.mobile_app.answer',
-                'No! CrewFlow features a mobile-first web interface ("My Jobs") optimized for any smartphone or tablet browser. Technicians simply log in to see their daily job queue, service routes, customer phone numbers, checklist items, and photo upload tools without App Store delays.',
+                'No! CrewBunker features a mobile-first web interface ("My Jobs") optimized for any smartphone or tablet browser. Technicians simply log in to see their daily job queue, service routes, customer phone numbers, checklist items, and photo upload tools without App Store delays.',
             ),
         },
         {
@@ -45,7 +45,7 @@ export function LandingFaq() {
             ),
             answer: t(
                 'landing.faq.items.payment_methods.answer',
-                'CrewFlow integrates with Razorpay for instant, friction-free billing in INR and international currencies. We support UPI (Google Pay, PhonePe, Paytm, BHIM), Credit/Debit Cards (RuPay, Visa, Mastercard), and NetBanking from 50+ major banks, accompanied by automated tax receipts.',
+                'CrewBunker integrates with Razorpay for instant, friction-free billing in INR and international currencies. We support UPI (Google Pay, PhonePe, Paytm, BHIM), Credit/Debit Cards (RuPay, Visa, Mastercard), and NetBanking from 50+ major banks, accompanied by automated tax receipts.',
             ),
         },
         {
@@ -88,7 +88,7 @@ export function LandingFaq() {
                     <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
                         {t(
                             'landing.faq.description',
-                            'Everything you need to know about CrewFlow, our work order workflow, mobile technician access, and payment setup.',
+                            'Everything you need to know about CrewBunker, our work order workflow, mobile technician access, and payment setup.',
                         )}
                     </p>
                 </div>

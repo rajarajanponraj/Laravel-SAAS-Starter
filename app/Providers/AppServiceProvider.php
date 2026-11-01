@@ -103,7 +103,7 @@ class AppServiceProvider extends ServiceProvider
         // Tell Cashier to use Workspace as the billable model instead of User
         Cashier::useCustomerModel(Workspace::class);
 
-        // CrewFlow Automation Event Listeners
+        // CrewBunker Automation Event Listeners
         Event::listen(WorkOrderStatusChanged::class, [DispatchWorkOrderAutomations::class, 'handleStatusChanged']);
         Event::listen(WorkOrderAssigned::class, [DispatchWorkOrderAutomations::class, 'handleAssigned']);
 

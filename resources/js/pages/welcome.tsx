@@ -23,7 +23,7 @@ export default function Welcome({
             <Head
                 title={t(
                     'landing.meta.title',
-                    'CrewFlow - Field Service & Work Order CRM for Modern Operations',
+                    'CrewBunker - Field Service & Work Order CRM for Modern Operations',
                 )}
             >
                 <meta
@@ -44,14 +44,14 @@ export default function Welcome({
                     property="og:title"
                     content={t(
                         'landing.meta.og_title',
-                        'CrewFlow - Field Service & Work Order CRM for Modern Operations',
+                        'CrewBunker - Field Service & Work Order CRM for Modern Operations',
                     )}
                 />
                 <meta
                     property="og:description"
                     content={t(
                         'landing.meta.og_description',
-                        'Dispatch work orders, track mobile technicians, enforce safety checklists, and capture verified proof of work with CrewFlow.',
+                        'Dispatch work orders, track mobile technicians, enforce safety checklists, and capture verified proof of work with CrewBunker.',
                     )}
                 />
                 <meta property="og:type" content="website" />
@@ -60,7 +60,7 @@ export default function Welcome({
                     name="twitter:title"
                     content={t(
                         'landing.meta.twitter_title',
-                        'CrewFlow - Field Service & Work Order CRM',
+                        'CrewBunker - Field Service & Work Order CRM',
                     )}
                 />
                 <meta

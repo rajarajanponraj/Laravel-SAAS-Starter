@@ -1,3 +1,4 @@
+import AppLogoIcon from '@/components/app-logo-icon';
 import AppearanceToggleDropdown from '@/components/appearance-dropdown';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { Button } from '@/components/ui/button';
@@ -6,7 +7,7 @@ import { useTranslations } from '@/hooks/use-translations';
 import { dashboard, login, register } from '@/routes';
 import { type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { ClipboardCheck, HardHat, Menu, Sparkles } from 'lucide-react';
+import { ClipboardCheck, Menu, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
 interface LandingHeaderProps {
@@ -41,15 +42,15 @@ export function LandingHeader({ canRegister = true }: LandingHeaderProps) {
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 {/* Brand Logo */}
                 <Link href="/" className="group flex items-center gap-2.5">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm shadow-primary/20 transition-transform group-hover:scale-105">
-                        <HardHat className="h-5 w-5" />
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-white shadow-sm shadow-blue-500/20 transition-transform group-hover:scale-105">
+                        <AppLogoIcon className="h-5 w-5" />
                     </div>
                     <div className="flex flex-col">
                         <div className="flex items-center gap-1.5">
                             <span className="text-lg font-extrabold tracking-tight text-foreground">
-                                CrewFlow
+                                CrewBunker
                             </span>
-                            <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary uppercase">
+                            <span className="rounded bg-blue-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-blue-600 dark:text-blue-400 uppercase">
                                 CRM
                             </span>
                         </div>
@@ -128,10 +129,10 @@ export function LandingHeader({ canRegister = true }: LandingHeaderProps) {
                         >
                             <div className="flex flex-col gap-6 pt-6">
                                 <div className="flex items-center gap-2">
-                                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                                        <HardHat className="h-4 w-4" />
+                                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
+                                        <AppLogoIcon className="h-4 w-4" />
                                     </div>
-                                    <span className="text-lg font-bold">CrewFlow</span>
+                                    <span className="text-lg font-bold">CrewBunker</span>
                                 </div>
                                 <nav className="flex flex-col gap-4">
                                     {navLinks.map((link) => (

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" fill="none">
+  <defs>
+    <linearGradient id="cbi-bg" x1="0" y1="0" x2="128" y2="128" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="50%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <linearGradient id="cbi-accent" x1="24" y1="20" x2="104" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="45%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#1E40AF" />
+    </linearGradient>
+    <linearGradient id="cbi-light" x1="36" y1="32" x2="92" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#93C5FD" stop-opacity="0.4" />
+    </linearGradient>
+    <filter id="cbi-shadow" x="14" y="14" width="100" height="100" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0284C7" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Container Base -->
+  <rect width="128" height="128" rx="32" fill="url(#cbi-bg)" />
+  <rect width="128" height="128" rx="32" stroke="#334155" stroke-width="2.5" />
+
+  <!-- Outer Fortress Hexagon -->
+  <path d="M64 18 L98 38 L98 82 L64 106 L30 82 L30 38 Z" 
+        fill="url(#cbi-accent)" 
+        stroke="#60A5FA" 
+        stroke-width="2.5" 
+        stroke-linejoin="round"
+        filter="url(#cbi-shadow)" />
+
+  <!-- Top Dispatch Chevron (The Field Crew Team) -->
+  <path d="M64 32 L86 46 L64 60 L42 46 Z" 
+        fill="url(#cbi-light)" 
+        stroke="#FFFFFF" 
+        stroke-width="1.8" 
+        stroke-linejoin="round" />
+
+  <!-- Fortress Vault Interior (The Bunker Security) -->
+  <path d="M44 68 L64 56 L84 68 L84 90 L64 100 L44 90 Z" 
+        fill="#0F172A" 
+        fill-opacity="0.65"
+        stroke="#93C5FD" 
+        stroke-width="2" 
+        stroke-linejoin="round" />
+
+  <!-- Central Pulse / Telemetry Beacon -->
+  <circle cx="64" cy="78" r="6" fill="#38BDF8" />
+  <circle cx="64" cy="78" r="2.5" fill="#FFFFFF" />
+  <path d="M64 72 L64 65 M70 78 L77 78 M64 84 L64 91 M58 78 L51 78" 
+        stroke="#38BDF8" 
+        stroke-width="2" 
+        stroke-linecap="round" />
+</svg>

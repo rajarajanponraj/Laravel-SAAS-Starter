@@ -36,7 +36,7 @@ export function AdBanner({ variant = 'sidebar', className = '' }: AdBannerProps)
     const sponsorAds = [
         {
             title: 'Titan Workwear & Gear',
-            tagline: 'Heavy-duty contractor apparel & safety gear. Save 15% with code CREWFLOW15.',
+            tagline: 'Heavy-duty contractor apparel & safety gear. Save 15% with code CREWBUNKER15.',
             category: 'Equipment',
             icon: Wrench,
             link: 'https://example.com/workwear',
@@ -44,7 +44,7 @@ export function AdBanner({ variant = 'sidebar', className = '' }: AdBannerProps)
         {
             title: 'NextGen Dispatch & GPS',
             tagline: 'Never miss an emergency call. Upgrade to Pro for 100% ad-free automated dispatching.',
-            category: 'CrewFlow Pro',
+            category: 'CrewBunker Pro',
             icon: Zap,
             link: '/billing/plans',
             isInternal: true,

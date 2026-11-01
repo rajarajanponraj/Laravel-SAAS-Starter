@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # ==============================================================================
-# CrewFlow - Failproof Server Deployment Script (StackCP / Shared Hosting)
+# CrewBunker - Failproof Server Deployment Script (StackCP / Shared Hosting)
 # ==============================================================================
 # This script executes on the production server after new code has been deployed
 # via GitHub Actions or manual transfer.
@@ -9,7 +9,7 @@
 
 set -eo pipefail
 
-echo "==> [CrewFlow] Starting deployment on $(date '+%Y-%m-%d %H:%M:%S')..."
+echo "==> [CrewBunker] Starting deployment on $(date '+%Y-%m-%d %H:%M:%S')..."
 
 # 1. Determine PHP CLI binary
 PHP_BIN=""
@@ -82,7 +82,8 @@ fi
 # 2b. Ensure StackCP database credentials, APP_URL, and APP_KEY are configured in .env
 if [ -f ".env" ]; then
     # Always enforce production environment and disable debug mode
-    echo "==> Enforcing APP_ENV=production and APP_DEBUG=false..."
+    echo "==> Enforcing APP_ENV=production, APP_DEBUG=false, and APP_NAME=CrewBunker..."
+    sed -i 's|^APP_NAME=.*|APP_NAME="CrewBunker"|' .env
     sed -i "s|^APP_ENV=.*|APP_ENV=production|" .env
     sed -i "s|^APP_DEBUG=.*|APP_DEBUG=false|" .env
     sed -i "s|^APP_URL=.*|APP_URL=https://crm.bytebunkers.sbs|" .env
@@ -115,7 +116,7 @@ if [ -f ".env" ]; then
         echo "MAIL_SCHEME=smtps" >> .env
     fi
     sed -i 's|^MAIL_FROM_ADDRESS=.*|MAIL_FROM_ADDRESS="notifications@bytebunkers.sbs"|' .env
-    sed -i 's|^MAIL_FROM_NAME=.*|MAIL_FROM_NAME="CrewFlow"|' .env
+    sed -i 's|^MAIL_FROM_NAME=.*|MAIL_FROM_NAME="CrewBunker"|' .env
 
     # Ensure Razorpay billing gateway configuration in .env
     echo "==> Configuring Razorpay billing gateway credentials in .env..."
@@ -235,4 +236,4 @@ if [ -f "storage/logs/laravel.log" ]; then
     tail -n 30 storage/logs/laravel.log || true
 fi
 
-echo "==> [CrewFlow] Deployment completed successfully on $(date '+%Y-%m-%d %H:%M:%S')!"
+echo "==> [CrewBunker] Deployment completed successfully on $(date '+%Y-%m-%d %H:%M:%S')!"

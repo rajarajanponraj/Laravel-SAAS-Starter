@@ -16,7 +16,7 @@ beforeEach(function () {
     Storage::fake('local');
 });
 
-test('complete crewflow end-to-end lifecycle: dispatch, worker mobile execution, evidence, checklist, supervisor review, and completion report', function () {
+test('complete crewbunker end-to-end lifecycle: dispatch, worker mobile execution, evidence, checklist, supervisor review, and completion report', function () {
     // 1. Setup Workspace, Owner (Dispatcher), and Field Worker
     $dispatcher = User::factory()->create(['name' => 'Alice Dispatcher']);
     $worker = User::factory()->create(['name' => 'Charlie Technician']);

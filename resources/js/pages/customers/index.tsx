@@ -121,7 +121,7 @@ export default function CustomersIndex({ customers, filters, canManage }: Custom
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Customers & Accounts - CrewFlow" />
+            <Head title="Customers & Accounts - CrewBunker" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
                 {/* Header */}

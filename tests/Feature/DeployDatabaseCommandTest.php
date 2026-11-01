@@ -36,7 +36,7 @@ test('db:deploy --seed-if-empty provisions superadmin, workspace and checklists 
     expect($admin)->not->toBeNull();
     expect($admin->email)->toBe('admin@crm.bytebunkers.sbs');
 
-    $workspace = Workspace::where('name', 'CrewFlow Operations')->first();
+    $workspace = Workspace::where('name', 'CrewBunker Operations')->first();
     expect($workspace)->not->toBeNull();
     expect($workspace->owner_id)->toBe($admin->id);
 
@@ -47,7 +47,7 @@ test('db:deploy --seed-if-empty provisions superadmin, workspace and checklists 
     // Verify credentials file created
     $credsFile = storage_path('logs/initial_credentials.txt');
     expect(File::exists($credsFile))->toBeTrue();
-    expect(File::get($credsFile))->toContain('CrewFlow Initial Superadmin Credentials');
+    expect(File::get($credsFile))->toContain('CrewBunker Initial Superadmin Credentials');
 });
 
 test('db:deploy --seed-if-empty skips seeding when database already contains users', function () {

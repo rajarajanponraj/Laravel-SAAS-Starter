@@ -149,7 +149,7 @@ export default function WorkerMyJobs({ jobs, currentTab, counts }: WorkerJobsPro
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="My Assigned Jobs - CrewFlow" />
+            <Head title="My Assigned Jobs - CrewBunker" />
 
             <div className="flex flex-1 flex-col gap-5 p-4 sm:p-6 md:p-8 max-w-4xl mx-auto w-full">
                 {/* Header for Technician */}

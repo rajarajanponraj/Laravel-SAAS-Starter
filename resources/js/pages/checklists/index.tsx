@@ -118,7 +118,7 @@ export default function ChecklistsIndex({ templates, canManage }: ChecklistsInde
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Checklist Templates - CrewFlow" />
+            <Head title="Checklist Templates - CrewBunker" />
 
             <div className="flex flex-1 flex-col gap-6 p-4 md:p-8 max-w-7xl mx-auto w-full">
                 {/* Header */}

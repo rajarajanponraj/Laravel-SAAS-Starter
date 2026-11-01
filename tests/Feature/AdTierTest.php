@@ -78,4 +78,3 @@ it('allows globally disabling ads via config even on free plan', function () {
         ->where('show_ads', false)
     );
 });
-

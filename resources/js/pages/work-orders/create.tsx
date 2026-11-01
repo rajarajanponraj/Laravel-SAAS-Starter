@@ -83,7 +83,7 @@ export default function CreateWorkOrder({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Create Work Order - CrewFlow" />
+            <Head title="Create Work Order - CrewBunker" />
 
             <div className="flex flex-1 flex-col gap-6 p-6 max-w-4xl">
                 <div className="flex items-center gap-3">

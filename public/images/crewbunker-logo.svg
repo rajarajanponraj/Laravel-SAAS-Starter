@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 96" width="460" height="96" fill="none">
+  <defs>
+    <linearGradient id="cbl-accent" x1="16" y1="12" x2="76" y2="84" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="50%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#1E40AF" />
+    </linearGradient>
+    <linearGradient id="cbl-light" x1="24" y1="20" x2="68" y2="72" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#93C5FD" stop-opacity="0.4" />
+    </linearGradient>
+    <linearGradient id="cbl-text" x1="104" y1="30" x2="360" y2="55" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0284C7" />
+      <stop offset="100%" stop-color="#2563EB" />
+    </linearGradient>
+    <filter id="cbl-glow" x="2" y="2" width="92" height="92" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#0284C7" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Group Icon -->
+  <g transform="translate(6, 4)">
+    <!-- Outer Fortress Hexagon -->
+    <path d="M42 6 L72 23 L72 61 L42 82 L12 61 L12 23 Z" 
+          fill="url(#cbl-accent)" 
+          stroke="#60A5FA" 
+          stroke-width="2" 
+          stroke-linejoin="round"
+          filter="url(#cbl-glow)" />
+
+    <!-- Forward Crew Chevron -->
+    <path d="M42 18 L60 29 L42 40 L24 29 Z" 
+          fill="url(#cbl-light)" 
+          stroke="#FFFFFF" 
+          stroke-width="1.5" 
+          stroke-linejoin="round" />
+
+    <!-- Bunker Vault Base -->
+    <path d="M26 47 L42 38 L58 47 L58 66 L42 75 L26 66 Z" 
+          fill="#0F172A" 
+          fill-opacity="0.75"
+          stroke="#93C5FD" 
+          stroke-width="1.6" 
+          stroke-linejoin="round" />
+
+    <!-- Dispatch Core -->
+    <circle cx="42" cy="57" r="4.5" fill="#38BDF8" />
+    <circle cx="42" cy="57" r="1.8" fill="#FFFFFF" />
+  </g>
+
+  <!-- Typography -->
+  <g transform="translate(108, 0)">
+    <!-- Primary Brand Wordmark -->
+    <text x="0" y="52" 
+          font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif" 
+          font-weight="800" 
+          font-size="38" 
+          letter-spacing="-0.03em" 
+          fill="#0F172A">
+      Crew<tspan fill="url(#cbl-text)">Bunker</tspan>
+    </text>
+
+    <!-- Subtitle / Tagline -->
+    <text x="2" y="73" 
+          font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif" 
+          font-weight="700" 
+          font-size="11" 
+          letter-spacing="0.22em" 
+          fill="#64748B">
+      FIELD SERVICE CRM &amp; DISPATCH
+    </text>
+
+    <!-- Bunker Vault Indicator Dot -->
+    <circle cx="282" cy="40" r="4" fill="#10B981" />
+  </g>
+</svg>

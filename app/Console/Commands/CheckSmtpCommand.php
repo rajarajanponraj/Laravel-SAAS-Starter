@@ -38,7 +38,7 @@ class CheckSmtpCommand extends Command
         $fromAddress = config('mail.from.address', 'noreply@example.com');
         $fromName = config('mail.from.name', config('app.name', 'Laravel'));
 
-        $this->info('==> [CrewFlow Mail Diagnostics]');
+        $this->info('==> [CrewBunker Mail Diagnostics]');
         $this->table(
             ['Configuration Key', 'Value'],
             [
@@ -102,10 +102,10 @@ class CheckSmtpCommand extends Command
             $this->info("==> Sending test email to {$to} via '{$defaultMailer}' transport...");
 
             try {
-                Mail::raw("Hello,\n\nThis is a verification email from CrewFlow confirming your SMTP email transport is functioning correctly.\n\nTimestamp: ".now()->toIso8601String(), function ($message) use ($to, $fromAddress, $fromName): void {
+                Mail::raw("Hello,\n\nThis is a verification email from CrewBunker confirming your SMTP email transport is functioning correctly.\n\nTimestamp: ".now()->toIso8601String(), function ($message) use ($to, $fromAddress, $fromName): void {
                     $message->to($to)
                         ->from($fromAddress, $fromName)
-                        ->subject('CrewFlow SMTP Verification Test - '.now()->format('Y-m-d H:i:s'));
+                        ->subject('CrewBunker SMTP Verification Test - '.now()->format('Y-m-d H:i:s'));
                 });
 
                 $this->info("   [SUCCESS] Test email successfully sent to {$to}!");

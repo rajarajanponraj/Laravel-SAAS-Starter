@@ -110,7 +110,7 @@ class ReportDashboardController extends Controller
         $workspace = $request->user()->currentWorkspace;
         Gate::authorize('viewAny', [WorkOrder::class, $workspace]);
 
-        $fileName = 'crewflow-work-orders-'.now()->format('Y-m-d').'.csv';
+        $fileName = 'crewbunker-work-orders-'.now()->format('Y-m-d').'.csv';
 
         return response()->streamDownload(function () use ($workspace) {
             $handle = fopen('php://output', 'w');

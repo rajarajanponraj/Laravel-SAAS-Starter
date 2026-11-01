@@ -194,7 +194,7 @@ export default function WorkOrdersIndex({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Work Orders & Dispatch - CrewFlow" />
+            <Head title="Work Orders & Dispatch - CrewBunker" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
                 {/* Header */}

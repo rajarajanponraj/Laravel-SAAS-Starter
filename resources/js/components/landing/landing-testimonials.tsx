@@ -10,7 +10,7 @@ export function LandingTestimonials() {
         {
             quote: t(
                 'landing.testimonials.items.rajesh.quote',
-                'CrewFlow completely transformed how we dispatch 35 technicians across 200+ commercial facilities. Billing disputes dropped to zero because every completed work order includes geo-stamped photos and client signatures.',
+                'CrewBunker completely transformed how we dispatch 35 technicians across 200+ commercial facilities. Billing disputes dropped to zero because every completed work order includes geo-stamped photos and client signatures.',
             ),
             author: 'Rajesh Nair',
             role: t('landing.testimonials.items.rajesh.role', 'Operations Director, Vertex Facility Management'),
@@ -76,7 +76,7 @@ export function LandingTestimonials() {
                     <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
                         {t(
                             'landing.testimonials.description',
-                            'See how facility managers, maintenance supervisors, and trade specialists run more profitable field operations with CrewFlow.',
+                            'See how facility managers, maintenance supervisors, and trade specialists run more profitable field operations with CrewBunker.',
                         )}
                     </p>
                 </div>

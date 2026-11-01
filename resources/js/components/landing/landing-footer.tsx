@@ -1,6 +1,7 @@
+import AppLogoIcon from '@/components/app-logo-icon';
 import { useTranslations } from '@/hooks/use-translations';
 import { Link } from '@inertiajs/react';
-import { CheckCircle2, HardHat } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 
 export function LandingFooter() {
     const { t } = useTranslations();
@@ -42,11 +43,11 @@ export function LandingFooter() {
                     {/* Brand Info */}
                     <div className="md:col-span-2 space-y-4">
                         <Link href="/" className="inline-flex items-center gap-2.5">
-                            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
-                                <HardHat className="h-5 w-5" />
+                            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-white shadow-sm shadow-blue-500/20">
+                                <AppLogoIcon className="h-5 w-5" />
                             </div>
-                            <span className="text-xl font-extrabold tracking-tight">CrewFlow</span>
-                            <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary uppercase">
+                            <span className="text-xl font-extrabold tracking-tight">CrewBunker</span>
+                            <span className="rounded bg-blue-500/10 px-1.5 py-0.5 text-[10px] font-semibold text-blue-600 dark:text-blue-400 uppercase">
                                 CRM
                             </span>
                         </Link>
@@ -96,7 +97,7 @@ export function LandingFooter() {
                 {/* Bottom Bar */}
                 <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-border/50 pt-8 sm:flex-row text-xs text-muted-foreground">
                     <p>
-                        © {new Date().getFullYear()} CrewFlow Inc. All rights reserved.
+                        © {new Date().getFullYear()} CrewBunker Inc. All rights reserved.
                     </p>
                     <div className="flex items-center gap-6">
                         <Link href="/help" className="hover:text-foreground transition-colors">

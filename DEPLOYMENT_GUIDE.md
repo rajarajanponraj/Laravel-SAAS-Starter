@@ -1,6 +1,6 @@
-# CrewFlow Deployment Guide — StackCP (`crm.bytebunkers.sbs`)
+# CrewBunker Deployment Guide — StackCP (`crm.bytebunkers.sbs`)
 
-This guide explains how to set up **continuous, automated, failproof deployment** for CrewFlow to your **StackCP** shared hosting subdomain (`crm.bytebunkers.sbs`) whenever code is pushed to your `main` branch.
+This guide explains how to set up **continuous, automated, failproof deployment** for CrewBunker to your **StackCP** shared hosting subdomain (`crm.bytebunkers.sbs`) whenever code is pushed to your `main` branch.
 
 ---
 
@@ -45,12 +45,12 @@ flowchart LR
 On your local terminal (or inside StackCP), generate a dedicated SSH key pair:
 
 ```bash
-ssh-keygen -t rsa -b 4096 -C "github-actions-deploy@bytebunkers.sbs" -f crewflow_deploy_key -N ""
+ssh-keygen -t rsa -b 4096 -C "github-actions-deploy@bytebunkers.sbs" -f CrewBunker_deploy_key -N ""
 ```
 
 This creates two files:
-- `crewflow_deploy_key` (**Private key** — add to GitHub Secrets)
-- `crewflow_deploy_key.pub` (**Public key** — add to StackCP)
+- `CrewBunker_deploy_key` (**Private key** — add to GitHub Secrets)
+- `CrewBunker_deploy_key.pub` (**Public key** — add to StackCP)
 
 ### Add Public Key to StackCP:
 In your StackCP panel under **SSH Access**, click **Add Public Key** and paste the public key (`github-actions-deploy@bytebunkers.sbs`).
@@ -68,9 +68,9 @@ In your GitHub repository:
 | :--- | :--- | :--- |
 | `SSH_HOST` | StackCP SSH server hostname or IP | `ssh.stackcp.com` |
 | `SSH_USER` | StackCP SSH account username | `bytebunkers.sbs` |
-| `SSH_PRIVATE_KEY` | Entire private key (`crewflow_deploy_key` file content) | `-----BEGIN OPENSSH PRIVATE KEY----- ...` |
+| `SSH_PRIVATE_KEY` | Entire private key (`CrewBunker_deploy_key` file content) | `-----BEGIN OPENSSH PRIVATE KEY----- ...` |
 | `SSH_PORT` | SSH Port (default is 22) | `22` |
-| `DEPLOY_PATH` | Path on the server where the app will live | `crewflow` |
+| `DEPLOY_PATH` | Path on the server where the app will live | `CrewBunker` |
 
 ---
 
@@ -84,14 +84,14 @@ ssh -p 22 your_username@your_ssh_host
 
 ### 1. Create the App Directory
 ```bash
-mkdir -p ~/crewflow
+mkdir -p ~/CrewBunker
 ```
 
 ### 2. Configure Your Database (Choose MySQL or Zero-Config SQLite)
 
 #### Option A: MySQL (Recommended for Multi-User Production)
 1. In your StackCP panel, click **MySQL Databases**.
-2. Create a new database: e.g. `crewflow_db`.
+2. Create a new database: e.g. `CrewBunker_db`.
 3. Create a database user, assign all privileges to the database, and note the password.
 
 #### Option B: SQLite (Zero Configuration Required)
@@ -100,7 +100,7 @@ If you don't want to manage MySQL credentials, you can set `DB_CONNECTION=sqlite
 ### 3. Configure the Production `.env`
 In your SSH session:
 ```bash
-cd ~/crewflow
+cd ~/CrewBunker
 nano .env
 ```
 Copy the contents of [`.env.production.example`](file:///c:/Users/raja/Music/crm/.env.production.example), paste it into `.env`, and update:
@@ -117,7 +117,7 @@ Save and exit (`Ctrl+O`, `Enter`, `Ctrl+X`).
 > [!NOTE]
 > **Automated Database Safety & First-Deploy Seeding**:
 > - **Pre-migration snapshots**: Before every migration, `deploy.sh` automatically creates a timestamped backup in `storage/app/backups/`. The 10 most recent snapshots are preserved.
-> - **Initial Seeding**: On the very first deployment, the script detects an empty database and automatically provisions your Superadmin account, default workspace (`CrewFlow Operations`), and standard field service inspection templates. Your login credentials are saved to `storage/logs/initial_credentials.txt`.
+> - **Initial Seeding**: On the very first deployment, the script detects an empty database and automatically provisions your Superadmin account, default workspace (`CrewBunker Operations`), and standard field service inspection templates. Your login credentials are saved to `storage/logs/initial_credentials.txt`.
 > - **Preservation**: On all future deployments, the database check detects existing users and automatically skips seeding, ensuring customer data is never altered.
 
 ### 4. Configure Subdomain Web Root (`crm.bytebunkers.sbs`)
@@ -125,18 +125,18 @@ In your StackCP control panel:
 1. Go to **Subdomains** (or **Domain Names**).
 2. Create or configure subdomain **`crm.bytebunkers.sbs`**.
 3. **Document Root Options**:
-   - **Option 1 (Direct to public)**: Set Document Root to `crewflow/public`.
-   - **Option 2 (Root .htaccess)**: If StackCP only points to `crewflow`, our included root `.htaccess` automatically and securely rewrites all requests into `/public` and blocks direct access to `.env` and sensitive files.
+   - **Option 1 (Direct to public)**: Set Document Root to `CrewBunker/public`.
+   - **Option 2 (Root .htaccess)**: If StackCP only points to `CrewBunker`, our included root `.htaccess` automatically and securely rewrites all requests into `/public` and blocks direct access to `.env` and sensitive files.
    - **Option 3 (Symlink)**: If StackCP uses a dedicated folder like `public_html/crm`:
      ```bash
-     ln -s ~/crewflow/public ~/public_html/crm
+     ln -s ~/CrewBunker/public ~/public_html/crm
      ```
 
 ---
 
 ## Step 5: Setup Background Workers & Scheduler on StackCP
 
-CrewFlow requires the Laravel scheduler (for overdue job alerts and reminders) and queue workers (for email notifications and automations).
+CrewBunker requires the Laravel scheduler (for overdue job alerts and reminders) and queue workers (for email notifications and automations).
 
 In StackCP, open **Scheduled Tasks / Cron Jobs**:
 
@@ -144,7 +144,7 @@ In StackCP, open **Scheduled Tasks / Cron Jobs**:
 - **Schedule**: `* * * * *` (Every Minute)
 - **Command**:
   ```bash
-  cd ~/crewflow && /usr/bin/php artisan schedule:run >> /dev/null 2>&1
+  cd ~/CrewBunker && /usr/bin/php artisan schedule:run >> /dev/null 2>&1
   ```
 
 ### Cron Job 2: Queue Worker (Runs Every Minute, Exits When Empty)
@@ -152,7 +152,7 @@ Shared hosting terminates persistent background processes. Running `queue:work` 
 - **Schedule**: `* * * * *` (Every Minute)
 - **Command**:
   ```bash
-  cd ~/crewflow && /usr/bin/php artisan queue:work --stop-when-empty --max-time=50 --tries=3 >> /dev/null 2>&1
+  cd ~/CrewBunker && /usr/bin/php artisan queue:work --stop-when-empty --max-time=50 --tries=3 >> /dev/null 2>&1
   ```
 
 ---
@@ -179,8 +179,8 @@ Shared hosting terminates persistent background processes. Running `queue:work` 
 
 | Issue | Cause | Solution |
 | :--- | :--- | :--- |
-| **500 Server Error** | Missing `.env` or APP_KEY | Run `cd ~/crewflow && php artisan key:generate` |
-| **Permission Denied** | Storage permissions | Run `chmod -R 775 ~/crewflow/storage ~/crewflow/bootstrap/cache` |
-| **Database Connection Error** | Wrong DB credentials | Double-check `DB_HOST`, `DB_USERNAME`, `DB_PASSWORD` in `~/crewflow/.env` |
-| **Vite Assets Missing / 404** | Symlink to `public_html` missing | Verify `~/public_html` points to `~/crewflow/public` |
+| **500 Server Error** | Missing `.env` or APP_KEY | Run `cd ~/CrewBunker && php artisan key:generate` |
+| **Permission Denied** | Storage permissions | Run `chmod -R 775 ~/CrewBunker/storage ~/CrewBunker/bootstrap/cache` |
+| **Database Connection Error** | Wrong DB credentials | Double-check `DB_HOST`, `DB_USERNAME`, `DB_PASSWORD` in `~/CrewBunker/.env` |
+| **Vite Assets Missing / 404** | Symlink to `public_html` missing | Verify `~/public_html` points to `~/CrewBunker/public` |
 | **Overdue Jobs Not Triggering** | Cron not executing | Verify StackCP Scheduled Tasks command uses the full path `/usr/bin/php` |

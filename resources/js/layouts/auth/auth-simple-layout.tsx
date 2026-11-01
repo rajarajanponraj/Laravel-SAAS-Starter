@@ -1,8 +1,9 @@
+import AppLogoIcon from '@/components/app-logo-icon';
 import AppearanceToggleDropdown from '@/components/appearance-dropdown';
 import { useTranslations } from '@/hooks/use-translations';
 import { home } from '@/routes';
 import { Link } from '@inertiajs/react';
-import { ArrowLeft, CheckCircle, Quote, Sparkles, Users } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Quote, Users } from 'lucide-react';
 import { type PropsWithChildren } from 'react';
 
 interface AuthLayoutProps {
@@ -26,10 +27,10 @@ export default function AuthSimpleLayout({
                         href={home()}
                         className="flex items-center gap-2 font-semibold"
                     >
-                        <div className="flex h-7 w-7 items-center justify-center rounded-sm bg-accent">
-                            <Sparkles className="h-4 w-4 text-foreground" />
+                        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-600 text-white">
+                            <AppLogoIcon className="h-4 w-4" />
                         </div>
-                        <span className="text-base text-white font-bold tracking-tight">CrewFlow</span>
+                        <span className="text-base text-white font-bold tracking-tight">CrewBunker</span>
                     </Link>
                     <Link
                         href={home()}
@@ -100,7 +101,7 @@ export default function AuthSimpleLayout({
                             "
                             {t(
                                 'auth.layout.testimonial.quote',
-                                'CrewFlow gave us instant visibility over our field crews across 12 cities. Work order dispatch turnaround dropped from 45 minutes to under 3 minutes.',
+                                'CrewBunker gave us instant visibility over our field crews across 12 cities. Work order dispatch turnaround dropped from 45 minutes to under 3 minutes.',
                             )}
                             "
                         </p>
@@ -131,7 +132,7 @@ export default function AuthSimpleLayout({
                     © {new Date().getFullYear()}{' '}
                     {t(
                         'auth.layout.copyright',
-                        'CrewFlow Inc. All rights reserved.',
+                        'CrewBunker Inc. All rights reserved.',
                     )}
                 </div>
             </div>
@@ -144,10 +145,10 @@ export default function AuthSimpleLayout({
                         href={home()}
                         className="flex items-center gap-2 font-semibold"
                     >
-                        <div className="flex h-7 w-7 items-center justify-center rounded-sm bg-foreground">
-                            <Sparkles className="h-4 w-4 text-background" />
+                        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-600 text-white">
+                            <AppLogoIcon className="h-4 w-4" />
                         </div>
-                        <span className="text-base font-bold tracking-tight">CrewFlow</span>
+                        <span className="text-base font-bold tracking-tight">CrewBunker</span>
                     </Link>
                     <AppearanceToggleDropdown />
                 </div>

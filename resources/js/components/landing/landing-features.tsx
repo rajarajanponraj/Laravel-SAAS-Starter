@@ -178,7 +178,7 @@ export function LandingFeatures() {
                             Field Execution Lifecycle
                         </span>
                         <h3 className="mt-2 text-2xl font-bold text-foreground sm:text-3xl">
-                            How CrewFlow Streamlines Every Work Order
+                            How CrewBunker Streamlines Every Work Order
                         </h3>
                     </div>
 

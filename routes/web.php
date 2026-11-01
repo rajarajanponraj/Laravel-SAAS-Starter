@@ -137,7 +137,7 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', '
         ]);
     })->name('dashboard');
 
-    // CrewFlow Operations
+    // CrewBunker Operations
     Route::resource('customers', CustomerController::class);
     Route::post('/service-locations', [ServiceLocationController::class, 'store'])->name('service-locations.store');
     Route::put('/service-locations/{serviceLocation}', [ServiceLocationController::class, 'update'])->name('service-locations.update');

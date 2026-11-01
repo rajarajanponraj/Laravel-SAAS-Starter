@@ -156,7 +156,7 @@ return [
         'key_secret' => env('RAZORPAY_KEY_SECRET'),
         'webhook_secret' => env('RAZORPAY_WEBHOOK_SECRET'),
         'currency' => env('RAZORPAY_CURRENCY', 'INR'),
-        'name' => env('APP_NAME', 'CrewFlow'),
+        'name' => env('APP_NAME', 'CrewBunker'),
         'theme_color' => env('RAZORPAY_THEME_COLOR', '#0f172a'),
     ],
 

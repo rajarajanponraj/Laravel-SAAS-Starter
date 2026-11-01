@@ -158,7 +158,7 @@ class RazorpayService
             'key' => $this->keyId ?: 'rzp_test_placeholder',
             'amount' => $amountSubunits,
             'currency' => $this->currency,
-            'name' => config('app.name', 'CrewFlow'),
+            'name' => config('app.name', 'CrewBunker'),
             'description' => ucfirst($planKey).' Plan ('.ucfirst($billingPeriod).')',
             'prefill' => [
                 'name' => $user->name,

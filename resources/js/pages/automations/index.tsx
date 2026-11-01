@@ -181,7 +181,7 @@ export default function AutomationsIndex({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Automations & Notifications - CrewFlow" />
+            <Head title="Automations & Notifications - CrewBunker" />
 
             <div className="flex flex-1 flex-col gap-6 p-4 md:p-8 max-w-7xl mx-auto w-full">
                 {/* Header */}

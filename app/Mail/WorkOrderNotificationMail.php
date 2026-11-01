@@ -35,7 +35,7 @@ class WorkOrderNotificationMail extends Mailable
                 <p><strong>Status:</strong> {$this->workOrder->status->label()}</p>
                 <p><strong>Priority:</strong> {$this->workOrder->priority->label()}</p>
                 <p>{$this->notificationMessage}</p>
-                <p><a href=\"".route('work-orders.show', $this->workOrder).'">View Work Order in CrewFlow</a></p>
+                <p><a href=\"".route('work-orders.show', $this->workOrder).'">View Work Order in '.config('app.name', 'CrewBunker').'</a></p>
             ',
         );
     }
