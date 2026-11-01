@@ -184,3 +184,4 @@ export function AdBanner({ variant = 'sidebar', className = '' }: AdBannerProps)
         </div>
     );
 }
+
