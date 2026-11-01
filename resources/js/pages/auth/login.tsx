@@ -11,7 +11,7 @@ import AuthLayout from '@/layouts/auth-layout';
 import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
-import { Form, Head, Link } from '@inertiajs/react';
+import { Form, Head, Link, usePage } from '@inertiajs/react';
 
 interface LoginProps {
     status?: string;
@@ -29,6 +29,7 @@ export default function Login({
     redirect,
 }: LoginProps) {
     const { t } = useTranslations();
+    const { flash } = usePage<{ flash?: { error?: string; success?: string; info?: string } }>().props;
 
     // Build register URL with email and redirect params if present
     const registerUrl = () => {
@@ -48,6 +49,18 @@ export default function Login({
             )}
         >
             <Head title={t('auth.login.page_title', 'Log in')} />
+
+            {flash?.error && (
+                <div className="rounded-lg border border-destructive/20 bg-destructive/10 p-3.5 text-sm text-destructive dark:border-destructive/30 dark:bg-destructive/15">
+                    {flash.error}
+                </div>
+            )}
+
+            {status && (
+                <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-3.5 text-sm font-medium text-emerald-600 dark:text-emerald-400">
+                    {status}
+                </div>
+            )}
 
             <Form
                 {...store.form()}
@@ -245,12 +258,6 @@ export default function Login({
                     </>
                 )}
             </Form>
-
-            {status && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
         </AuthLayout>
     );
 }

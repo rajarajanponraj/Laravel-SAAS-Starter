@@ -18,7 +18,29 @@ class SocialiteController extends Controller
      */
     public function redirect(string $provider)
     {
-        return Socialite::driver($provider)->redirect();
+        $supportedProviders = ['google', 'github'];
+
+        if (! in_array($provider, $supportedProviders, true)) {
+            return redirect()->route('login')->with('error', "OAuth provider [{$provider}] is not supported.");
+        }
+
+        $clientId = config("services.{$provider}.client_id");
+        $clientSecret = config("services.{$provider}.client_secret");
+
+        if ((empty($clientId) || empty($clientSecret)) && ! app()->environment('testing')) {
+            $envVar = strtoupper($provider);
+
+            return redirect()->route('login')->with(
+                'error',
+                ucfirst($provider)." Sign-In is not configured yet. Please add {$envVar}_CLIENT_ID and {$envVar}_CLIENT_SECRET to your .env file, or sign in using your email and password."
+            );
+        }
+
+        try {
+            return Socialite::driver($provider)->redirect();
+        } catch (\Throwable $e) {
+            return redirect()->route('login')->with('error', 'Unable to initiate '.ucfirst($provider).' sign-in: '.$e->getMessage());
+        }
     }
 
     /**
@@ -30,9 +52,7 @@ class SocialiteController extends Controller
             /** @var \Laravel\Socialite\Two\User $socialUser */
             $socialUser = Socialite::driver($provider)->user();
         } catch (\Exception $e) {
-            return redirect()->route('login')->with('flash', [
-                'error' => 'Authentication failed. Please try again.',
-            ]);
+            return redirect()->route('login')->with('error', 'Authentication with '.ucfirst($provider).' failed: '.$e->getMessage());
         }
 
         // Find existing connected account
@@ -81,9 +101,7 @@ class SocialiteController extends Controller
             } catch (\Exception $e) {
                 DB::rollBack();
 
-                return redirect()->route('login')->with('flash', [
-                    'error' => 'Could not create your user account.',
-                ]);
+                return redirect()->route('login')->with('error', 'Could not create your user account.');
             }
         }
 

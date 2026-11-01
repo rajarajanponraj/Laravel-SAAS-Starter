@@ -1,6 +1,6 @@
 import { login } from '@/routes';
 import { store } from '@/routes/register';
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, usePage } from '@inertiajs/react';
 
 import InputError from '@/components/input-error';
 import SocialLoginButtons from '@/components/social-login-buttons';
@@ -19,6 +19,7 @@ interface RegisterProps {
 
 export default function Register({ email, redirect }: RegisterProps) {
     const { t } = useTranslations();
+    const { flash } = usePage<{ flash?: { error?: string; success?: string; info?: string } }>().props;
 
     // Build login URL with email and redirect params if present
     const loginUrl = () => {
@@ -38,6 +39,13 @@ export default function Register({ email, redirect }: RegisterProps) {
             )}
         >
             <Head title={t('auth.register.page_title', 'Register')} />
+
+            {flash?.error && (
+                <div className="rounded-lg border border-destructive/20 bg-destructive/10 p-3.5 text-sm text-destructive dark:border-destructive/30 dark:bg-destructive/15">
+                    {flash.error}
+                </div>
+            )}
+
             <Form
                 {...store.form()}
                 resetOnSuccess={['password', 'password_confirmation']}

@@ -124,3 +124,19 @@ it('attaches to existing email account if a connection does not exist yet', func
     $this->assertCount(1, $user->connectedAccounts);
     $this->assertEquals('github_789', $user->connectedAccounts->first()->provider_id);
 });
+
+it('rejects unsupported oauth provider at route level', function () {
+    $response = $this->get('/auth/unsupported-provider/redirect');
+
+    $response->assertNotFound();
+});
+
+it('redirects to login with error when oauth callback fails', function () {
+    $this->mockProvider->shouldReceive('user')
+        ->andThrow(new Exception('Invalid OAuth token'));
+
+    $response = $this->get('/auth/github/callback');
+
+    $response->assertRedirect(route('login'));
+    $response->assertSessionHas('error');
+});
