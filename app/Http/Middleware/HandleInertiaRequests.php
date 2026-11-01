@@ -103,9 +103,12 @@ class HandleInertiaRequests extends Middleware
                 'personal_workspace' => $currentWorkspace->personal_workspace,
                 'owner_id' => $currentWorkspace->owner_id,
                 'plan' => $currentWorkspace->plan_name,
+                'on_free_plan' => $currentWorkspace->onFreePlan(),
                 'role' => $currentWorkspace->getUserRole($user),
                 'feature_flags' => Feature::for($currentWorkspace)->all(),
             ] : null,
+            'show_ads' => (bool) ($currentWorkspace && $currentWorkspace->onFreePlan() && config('billing.ads.enabled', true)),
+            'ads_config' => config('billing.ads', []),
             'workspaces' => $workspaces,
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'flash' => [

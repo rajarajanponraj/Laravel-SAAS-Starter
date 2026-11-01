@@ -66,3 +66,4 @@ Comprehensive automated tests are located at [`tests/Feature/WorkerLocationTest.
 - Dispatch map page rendering with service locations & active jobs
 - Live JSON polling endpoint validation
 - Technician historical breadcrumb route retrieval
+

@@ -1,3 +1,4 @@
+import { AdBanner } from '@/components/ad-banner';
 import { OnboardingChecklist } from '@/components/onboarding-checklist';
 import { ProductTour } from '@/components/product-tour';
 import { Badge } from '@/components/ui/badge';
@@ -212,11 +213,14 @@ export default function Dashboard() {
                                 {t(
                                     'dashboard.upgrade_to_pro',
                                     'Upgrade to Pro',
-                                )}
+                                    )}
                             </Link>
                         </Button>
                     )}
                 </div>
+
+                {/* Free Plan Sponsor / Ad Banner */}
+                <AdBanner variant="banner" />
 
                 {/* Stats Cards */}
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

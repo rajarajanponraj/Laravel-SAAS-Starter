@@ -43,6 +43,7 @@ return [
                 '15 Work Orders / month',
                 '50MB Evidence Storage',
                 'Standard Checklists',
+                'Ad-Supported Free Tier',
             ],
         ],
 
@@ -68,6 +69,7 @@ return [
                 'custom_templates' => 25,
             ],
             'features' => [
+                '100% Ad-Free Experience',
                 '5 Workspaces',
                 '10 Team Members',
                 '100 Work Orders / month',
@@ -100,6 +102,7 @@ return [
                 'custom_templates' => -1, // Unlimited
             ],
             'features' => [
+                '100% Ad-Free Experience',
                 'Unlimited Workspaces',
                 'Unlimited Team Members',
                 'Unlimited Work Orders',
@@ -155,6 +158,24 @@ return [
         'currency' => env('RAZORPAY_CURRENCY', 'INR'),
         'name' => env('APP_NAME', 'CrewFlow'),
         'theme_color' => env('RAZORPAY_THEME_COLOR', '#0f172a'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Ad-Supported Free Tier Configuration
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, workspaces on the Free plan will display non-intrusive
+    | sponsor and ad banners with an "Upgrade to Pro for Ad-Free" CTA.
+    | Paid tiers (Pro, Business) are strictly 100% ad-free.
+    |
+    */
+    'ads' => [
+        'enabled' => env('ADS_ENABLED_ON_FREE_TIER', true),
+        'provider' => env('ADS_PROVIDER', 'custom'), // 'custom', 'adsense'
+        'adsense_client' => env('ADSENSE_CLIENT_ID', null),
+        'adsense_slot_sidebar' => env('ADSENSE_SLOT_SIDEBAR', null),
+        'adsense_slot_banner' => env('ADSENSE_SLOT_BANNER', null),
     ],
 
 ];

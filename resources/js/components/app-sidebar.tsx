@@ -1,3 +1,4 @@
+import { AdBanner } from '@/components/ad-banner';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -136,6 +137,7 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
+                <AdBanner variant="sidebar" />
                 <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
