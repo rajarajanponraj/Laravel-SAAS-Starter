@@ -1,6 +1,6 @@
 import '../css/app.css';
 
-import { createInertiaApp } from '@inertiajs/react';
+import { createInertiaApp, router } from '@inertiajs/react';
 import { configureEcho } from '@laravel/echo-react';
 import * as Sentry from '@sentry/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -118,3 +118,18 @@ createInertiaApp({
 
 // This will set light / dark mode on load...
 initializeTheme();
+
+// Matomo SPA page view tracking on Inertia client-side navigation
+let isInitialMatomoLoad = true;
+router.on('navigate', (event) => {
+    if (isInitialMatomoLoad) {
+        isInitialMatomoLoad = false;
+        return;
+    }
+    if (typeof window !== 'undefined' && (window as unknown as { _paq?: unknown[][] })._paq) {
+        const paq = (window as unknown as { _paq: unknown[][] })._paq;
+        paq.push(['setCustomUrl', event.detail.page.url]);
+        paq.push(['setDocumentTitle', document.title]);
+        paq.push(['trackPageView']);
+    }
+});

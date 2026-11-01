@@ -52,11 +52,30 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&instrument-sans:400,500,600" rel="stylesheet" />
 
+        <!-- Matomo -->
+        <script>
+          var _paq = window._paq = window._paq || [];
+          /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+          _paq.push(["setCookieDomain", "*.bytebunkers.in"]);
+          _paq.push(["setDoNotTrack", true]);
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u="//tracking.bytebunkers.sbs/";
+            _paq.push(['setTrackerUrl', u+'matomo.php']);
+            _paq.push(['setSiteId', '1']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+          })();
+        </script>
+        <!-- End Matomo Code -->
+
         @viteReactRefresh
         @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
+        <noscript><p><img referrerpolicy="no-referrer-when-downgrade" src="//tracking.bytebunkers.sbs/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p></noscript>
         @inertia
     </body>
 </html>

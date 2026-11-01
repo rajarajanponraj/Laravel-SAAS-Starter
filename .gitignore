@@ -37,3 +37,5 @@ frankenphp-worker.php
 /storage/app/private/scribe
 rzp-key.csv
 *.csv
+client_secret*.json
+google-*.json
