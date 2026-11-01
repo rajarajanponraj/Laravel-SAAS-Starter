@@ -65,6 +65,7 @@ use App\Http\Controllers\UsageController;
 use App\Http\Controllers\WebhookEndpointController;
 use App\Http\Controllers\WebhookLogController;
 use App\Http\Controllers\WorkerJobController;
+use App\Http\Controllers\WorkerLocationController;
 use App\Http\Controllers\WorkOrderAssignmentController;
 use App\Http\Controllers\WorkOrderChecklistController;
 use App\Http\Controllers\WorkOrderController;
@@ -170,6 +171,12 @@ Route::middleware(['auth', 'verified', 'onboarded', 'workspace', 'require2fa', '
     // Reports & Analytics
     Route::get('/reports', [ReportDashboardController::class, 'index'])->name('reports.index');
     Route::get('/reports/export-work-orders', [ReportDashboardController::class, 'export'])->name('reports.export');
+
+    // Location Tracking & Dispatch Map
+    Route::get('/locations/map', [WorkerLocationController::class, 'index'])->name('locations.index');
+    Route::post('/locations/ping', [WorkerLocationController::class, 'store'])->name('locations.store');
+    Route::get('/locations/live', [WorkerLocationController::class, 'live'])->name('locations.live');
+    Route::get('/locations/history/{user}', [WorkerLocationController::class, 'history'])->name('locations.history');
 
     // Workspace routes
     Route::prefix('workspaces')->name('workspaces.')->group(function () {

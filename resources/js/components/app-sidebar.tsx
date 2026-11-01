@@ -22,6 +22,7 @@ import {
     HardHat,
     LayoutGrid,
     ListChecks,
+    MapPin,
     Settings,
     ShieldAlert,
     Zap,
@@ -42,6 +43,11 @@ const getMainNavItems = (
             title: t('navigation.work_orders', 'Work Orders'),
             href: '/work-orders',
             icon: ClipboardList,
+        },
+        {
+            title: t('navigation.live_map', 'Live Map'),
+            href: '/locations/map',
+            icon: MapPin,
         },
         {
             title: t('navigation.my_jobs', 'My Jobs'),

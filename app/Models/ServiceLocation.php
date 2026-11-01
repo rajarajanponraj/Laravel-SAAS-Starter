@@ -29,8 +29,23 @@ class ServiceLocation extends Model
         'state',
         'postal_code',
         'country',
+        'latitude',
+        'longitude',
         'access_notes',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'latitude' => 'float',
+            'longitude' => 'float',
+        ];
+    }
 
     /**
      * Workspace this location belongs to.

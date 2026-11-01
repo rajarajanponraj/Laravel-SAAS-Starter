@@ -343,6 +343,14 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the worker locations recorded for the user.
+     */
+    public function workerLocations(): HasMany
+    {
+        return $this->hasMany(WorkerLocation::class);
+    }
+
+    /**
      * Calculate the user's profile completeness score.
      *
      * Returns an array with:

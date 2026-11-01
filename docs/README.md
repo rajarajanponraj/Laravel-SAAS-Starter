@@ -85,6 +85,7 @@ This repository contains comprehensive documentation for the architecture, featu
 - [Workspace Templates](./features/workspace-templates.md)
 - [Connected Accounts](./features/connected-accounts.md)
 - [Workspace Retention Insights](./features/workspace-retention-insights.md)
+- [Location Tracking & Dispatch Map](./features/location-tracking.md)
 
 ## Development Directives
 

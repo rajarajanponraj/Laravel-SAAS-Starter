@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
+import axios from 'axios';
 import {
     AlertCircle,
     Building2,
@@ -12,12 +13,14 @@ import {
     Clock,
     ExternalLink,
     HardHat,
+    Loader2,
     MapPin,
+    Navigation,
     Phone,
     Play,
     Sparkles,
 } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface Customer {
     id: number;
@@ -100,6 +103,41 @@ export default function WorkerMyJobs({ jobs, currentTab, counts }: WorkerJobsPro
         }
     };
 
+    const [isCheckingIn, setIsCheckingIn] = useState(false);
+    const [checkInMsg, setCheckInMsg] = useState<string | null>(null);
+
+    const handleCheckInLocation = async () => {
+        if (!navigator.geolocation) {
+            setCheckInMsg('Geolocation not supported by device.');
+            return;
+        }
+
+        setIsCheckingIn(true);
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                try {
+                    await axios.post('/locations/ping', {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        accuracy: position.coords.accuracy,
+                        activity_type: 'on_shift',
+                    });
+                    setCheckInMsg('GPS location shared with dispatch!');
+                    setTimeout(() => setCheckInMsg(null), 3000);
+                } catch {
+                    setCheckInMsg('Failed to update location.');
+                } finally {
+                    setIsCheckingIn(false);
+                }
+            },
+            () => {
+                setIsCheckingIn(false);
+                setCheckInMsg('GPS location access denied.');
+            },
+            { enableHighAccuracy: true, timeout: 10000 },
+        );
+    };
+
     const handleQuickStart = (e: React.MouseEvent, workOrderId: number) => {
         e.preventDefault();
         e.stopPropagation();
@@ -128,8 +166,24 @@ export default function WorkerMyJobs({ jobs, currentTab, counts }: WorkerJobsPro
                         </p>
                     </div>
 
-                    {/* Tab Switcher */}
-                    <div className="flex items-center gap-1 bg-muted p-1 rounded-xl self-start sm:self-auto border">
+                    {/* Action & Tab Switcher */}
+                    <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            disabled={isCheckingIn}
+                            onClick={handleCheckInLocation}
+                            className="h-8 gap-1 text-xs"
+                        >
+                            {isCheckingIn ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            ) : (
+                                <Navigation className="h-3.5 w-3.5 text-primary" />
+                            )}
+                            Share Location
+                        </Button>
+
+                        <div className="flex items-center gap-1 bg-muted p-1 rounded-xl border">
                         <Link
                             href="/my-jobs?tab=active"
                             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 ${
@@ -162,6 +216,14 @@ export default function WorkerMyJobs({ jobs, currentTab, counts }: WorkerJobsPro
                         </Link>
                     </div>
                 </div>
+            </div>
+
+                {checkInMsg && (
+                    <div className="rounded-lg bg-primary/10 border border-primary/20 px-3.5 py-2 text-xs text-primary flex items-center justify-between">
+                        <span>{checkInMsg}</span>
+                        <button onClick={() => setCheckInMsg(null)} className="font-bold text-sm hover:opacity-70">&times;</button>
+                    </div>
+                )}
 
                 {/* Jobs List */}
                 {jobs.data.length === 0 ? (

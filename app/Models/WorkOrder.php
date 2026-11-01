@@ -129,6 +129,14 @@ class WorkOrder extends Model
     }
 
     /**
+     * Get location records captured during this work order.
+     */
+    public function workerLocations(): HasMany
+    {
+        return $this->hasMany(WorkerLocation::class);
+    }
+
+    /**
      * Scope query to jobs assigned to a specific worker.
      */
     public function scopeAssignedTo(Builder $query, User|int $user): Builder

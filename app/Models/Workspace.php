@@ -236,6 +236,14 @@ class Workspace extends Model
     }
 
     /**
+     * Get worker locations tracked within this workspace.
+     */
+    public function workerLocations(): HasMany
+    {
+        return $this->hasMany(WorkerLocation::class);
+    }
+
+    /**
      * Get work orders belonging to this workspace.
      */
     public function workOrders(): HasMany
